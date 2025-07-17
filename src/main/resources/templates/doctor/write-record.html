@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="~{layout/doctor_layout :: head('Write Medical Note')}"/>
+    <link rel="stylesheet" th:href="@{/css/form.css}"/>
+</head>
+<body>
+<div th:replace="~{layout/doctor_layout :: page(pageTitle='Write Medical Note', activePage='write-record', pageContent=~{::.content})}">
+    <div class="content">
+        <div class="form-container">
+            <h2><i class="fas fa-notes-medical"></i> Add Medical Note</h2>
+
+            <!-- Success/Error Messages -->
+            <div th:if="${success}" class="alert success" th:text="${success}"></div>
+            <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+            <form th:action="@{/doctor/write-record}" method="POST">
+                <div class="form-group">
+                    <label for="patientId">Patient</label>
+                    <div class="input-group">
+                        <i class="fas fa-user-injured"></i>
+                        <select id="patientId" name="patientId" required>
+                            <option value="">Select a patient...</option>
+                            <option th:each="p : ${patients}"
+                                    th:value="${p.id}"
+                                    th:text="${p.fullName + ' (' + p.email + ')'}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="medicalNotes">Medical Note</label>
+                    <div class="input-group">
+                        <i class="fas fa-sticky-note"></i>
+                        <textarea id="medicalNotes" name="medicalNotes" rows="5" placeholder="Add diagnosis, observations, or updates to the patient's record..." required></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">
+                    <i class="fas fa-save"></i> Add Note to Record
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

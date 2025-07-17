@@ -2,7 +2,11 @@ package com.hospital.controller;
 
 import com.hospital.entity.Appointment;
 import com.hospital.entity.Patient;
+import com.hospital.entity.Prescription;
+import com.hospital.entity.MedicalRecord;
 import com.hospital.service.AppointmentService;
+import com.hospital.service.PrescriptionService;
+import com.hospital.service.MedicalRecordService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,9 +19,16 @@ import java.util.Collections;
 import java.util.List;
 
 @Controller
+@RequestMapping("/patient")
 public class PatientController {
     @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    private PrescriptionService prescriptionService;
+
+    @Autowired
+    private MedicalRecordService medicalRecordService;
 
     // This method runs before any other in this controller,
     // and its return value is added to the model.
@@ -26,7 +37,7 @@ public class PatientController {
         return (Patient) session.getAttribute("user");
     }
 
-    @GetMapping("/patient/dashboard")
+    @GetMapping("/dashboard")
     public String patientDashboard(@ModelAttribute("user") Patient patient, Model model) {
         if (patient == null) {
             return "redirect:/login";
@@ -35,7 +46,7 @@ public class PatientController {
         return "patient/dashboard";
     }
 
-    @GetMapping("/patient/appointments")
+    @GetMapping("/appointments")
     public String viewAppointments(@ModelAttribute("user") Patient patient, Model model){
         if (patient == null){
             return "redirect:/login";
@@ -46,7 +57,7 @@ public class PatientController {
         return "patient/appointments";
     }
 
-    @GetMapping("/patient/profile")
+    @GetMapping("/profile")
     public String patientProfile(@ModelAttribute("user") Patient patient, Model model) {
         if (patient == null) {
             return "redirect:/login";
@@ -55,23 +66,25 @@ public class PatientController {
         return "patient/profile";
     }
 
-    @GetMapping("/patient/prescriptions")
+    @GetMapping("/prescriptions")
     public String viewPrescriptions(@ModelAttribute("user") Patient patient, Model model){
         if (patient == null){
             return "redirect:/login";
         }
-        model.addAttribute("prescriptions", Collections.emptyList());
+        List<Prescription> prescriptions = prescriptionService.getPrescriptionsByPatient(patient);
+        model.addAttribute("prescriptions", prescriptions);
         model.addAttribute("activePage", "prescriptions");
         return "patient/prescriptions";
-
     }
 
-    @GetMapping("/patient/view-records")
+    @GetMapping("/view-records")
     public String viewMedicalRecords(@ModelAttribute("user") Patient patient, Model model){
         if (patient == null){
             return "redirect:/login";
         }
+        List<MedicalRecord> records = medicalRecordService.getRecordsByPatient(patient);
+        model.addAttribute("medicalRecords", records);
         model.addAttribute("activePage", "view-records");
-        return "patient/view-records"; // This should match the new page name if you create one
+        return "patient/view-records";
     }
 } 

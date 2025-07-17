@@ -1,0 +1,12 @@
+.table-container { background: var(--white); border-radius: 10px; box-shadow: 0 2px 8px var(--shadow); padding: 20px; overflow-x: auto; }
+.empty-message { text-align: center; color: var(--text); font-size: 16px; padding: 40px; }
+.empty-message i { font-size: 48px; color: #ccc; margin-bottom: 20px; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+th { background: var(--section-bg); color: var(--text); font-weight: 600; }
+tr:hover { background: var(--bg); }
+.status-badge { padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; text-transform: uppercase; }
+.status-pending { background: #fff3cd; color: #856404; }
+.status-confirmed { background: #d4edda; color: #155724; }
+.status-cancelled { background: #f8d7da; color: #721c24; }
+.status-completed { background: #d1ecf1; color: #0c5460; }

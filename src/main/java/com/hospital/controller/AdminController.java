@@ -1,5 +1,6 @@
 package com.hospital.controller;
 
+import com.hospital.entity.BaseUser;
 import com.hospital.entity.Doctor;
 import com.hospital.entity.Patient;
 import com.hospital.entity.Appointment;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -73,24 +76,22 @@ public class AdminController {
             
             // Create Doctor entity
             Doctor doctor = new Doctor();
-            doctor.setFirstName(fullName.split(" ")[0]);
-            if (fullName.split(" ").length > 2) doctor.setMiddleName(fullName.split(" ")[1]);
-            doctor.setLastName(fullName.split(" ")[fullName.split(" ").length-1]);
+            String[] nameParts = fullName.split(" ", 3);
+            doctor.setFirstName(nameParts.length > 0 ? nameParts[0] : "");
+            doctor.setLastName(nameParts.length > 1 ? nameParts[nameParts.length - 1] : "");
+            if (nameParts.length > 2) {
+                doctor.setMiddleName(nameParts[1]);
+            }
             doctor.setSpecialty(specialty);
             doctor.setEmail(email);
             doctor.setPhone(phone);
-            doctor.setGender(Doctor.Gender.valueOf(gender.toUpperCase()));
+            doctor.setGender(BaseUser.Gender.valueOf(gender.toUpperCase()));
             doctor.setLicenseNumber(licenseNumber);
             doctor.setExperience(experience);
             doctor.setPassword(password);
             
-            // Save doctor
             Doctor savedDoctor = doctorService.saveDoctor(doctor);
-            
-            String[] nameParts = fullName.split(" ");
-            String first = nameParts[0];
-            String last = nameParts[nameParts.length-1];
-            model.addAttribute("success", "Doctor " + first + " " + last + " has been successfully registered!");
+            model.addAttribute("success", "Doctor " + savedDoctor.getFullName() + " has been successfully registered!");
             
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
@@ -105,14 +106,14 @@ public class AdminController {
     public String savePatient(
             @RequestParam String firstName,
             @RequestParam String middleName,
-            @RequestParam String lastName,
-            @RequestParam String dateOfBirth,
-            @RequestParam String gender,
-            @RequestParam String email,
-            @RequestParam String phone,
-            @RequestParam String address,
+            @RequestParam String lastName, @RequestParam String dateOfBirth,
+            @RequestParam String gender, @RequestParam String email,
+            @RequestParam String phone, @RequestParam String address,
             @RequestParam(required = false) String medicalNotes,
-            Model model) {
+            // CRITICAL: A password and username must be collected to create a usable patient account.
+            // These should be added to the patient registration form in add-doctor.html.
+            @RequestParam String username,
+            @RequestParam String password, Model model) {
         
         try {
             // Sanitize inputs (trim whitespace)
@@ -134,13 +135,14 @@ public class AdminController {
             patient.setMiddleName(middleName);
             patient.setLastName(lastName);
             patient.setDateOfBirth(dob);
-            patient.setGender(Patient.Gender.valueOf(gender.toUpperCase()));
+            patient.setGender(BaseUser.Gender.valueOf(gender.toUpperCase()));
             patient.setEmail(email);
             patient.setPhone(phone);
             patient.setAddress(address);
             patient.setMedicalNotes(medicalNotes.isEmpty() ? null : medicalNotes);
-            
-            // Save patient
+            patient.setUsername(username);
+            patient.setPassword(password); // The service will hash this.
+
             Patient savedPatient = patientService.savePatient(patient);
             
             model.addAttribute("success", "Patient " + savedPatient.getFullName() + " has been successfully registered!");
@@ -178,23 +180,23 @@ public class AdminController {
             // Validate that at least one field is provided
             if (license.isEmpty() && email.isEmpty()) {
                 model.addAttribute("error", "Please provide either a license number or email address.");
-                return "admin/verify-doctor";
+                return "admin/verify-doctor"; //NOSONAR
             }
             
-            Doctor doctor = null;
+            Optional<Doctor> doctorOpt = Optional.empty();
             
             // Search by license number if provided
             if (!license.isEmpty()) {
-                doctor = doctorService.findByLicenseNumber(license);
+                doctorOpt = doctorService.getDoctorByLicenseNumber(license);
             }
             
             // Search by email if license not found and email provided
-            if (doctor == null && !email.isEmpty()) {
-                doctor = doctorService.findByEmail(email);
+            if (doctorOpt.isEmpty() && !email.isEmpty()) {
+                doctorOpt = doctorService.getDoctorByEmail(email);
             }
             
-            if (doctor != null) {
-                model.addAttribute("doctor", doctor);
+            if (doctorOpt.isPresent()) {
+                model.addAttribute("doctor", doctorOpt.get());
                 model.addAttribute("success", "Doctor found successfully!");
             } else {
                 model.addAttribute("error", "No doctor found with the provided information.");

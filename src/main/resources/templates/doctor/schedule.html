@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="~{layout/doctor_layout :: head('My Schedule')}"></head>
+    <link rel="stylesheet" th:href="@{/css/appointments_table.css}"/>
+</head>
+<body>
+<div th:replace="~{layout/doctor_layout :: page(pageTitle='My Schedule', activePage='schedule', pageContent=~{::.content})}">
+    <div class="content">
+        <div class="table-container">
+            <div th:if="${#lists.isEmpty(appointments)}" class="empty-message">
+                <i class="fas fa-calendar-times"></i>
+                <p>You have no appointments scheduled.</p>
+            </div>
+            <div th:unless="${#lists.isEmpty(appointments)}">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Date & Time</th>
+                        <th>Type</th>
+                        <th>Symptoms</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="appt : ${appointments}">
+                        <td>
+                            <div>
+                                <strong th:text="${appt.patient.fullName}">Patient Name</strong><br>
+                                <small th:text="${appt.patient.email}" style="color: #666;">patient@email.com</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span th:text="${#temporals.format(appt.appointmentDate, 'MMM dd, yyyy')}">Date</span><br>
+                                <span th:text="${#temporals.format(appt.appointmentTime, 'hh:mm a')}">Time</span>
+                            </div>
+                        </td>
+                        <td th:text="${appt.appointmentType}">Type</td>
+                        <td th:text="${appt.symptoms}">Symptoms</td>
+                        <td>
+                            <span class="status-badge" th:classappend="'status-' + ${#strings.toLowerCase(appt.status)}" th:text="${appt.status}">Status</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

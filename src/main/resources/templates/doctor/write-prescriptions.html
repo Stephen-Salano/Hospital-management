@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="~{layout/doctor_layout :: head('Write Prescription')}"/>
+    <link rel="stylesheet" th:href="@{/css/form.css}"/>
+</head>
+<body>
+<div th:replace="~{layout/doctor_layout :: page(pageTitle='Write Prescription', activePage='write-prescription', pageContent=~{::.content})}">
+    <div class="content">
+        <div class="form-container">
+            <h2><i class="fas fa-file-prescription"></i> New Prescription</h2>
+
+            <!-- Success/Error Messages -->
+            <div th:if="${success}" class="alert success" th:text="${success}"></div>
+            <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+            <form th:action="@{/doctor/write-prescription}" method="POST">
+                <div class="form-group">
+                    <label for="patientId">Patient</label>
+                    <div class="input-group">
+                        <i class="fas fa-user-injured"></i>
+                        <select id="patientId" name="patientId" required>
+                            <option value="">Select a patient...</option>
+                            <option th:each="p : ${patients}"
+                                    th:value="${p.id}"
+                                    th:text="${p.fullName + ' (' + p.email + ')'}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="medication">Medication</label>
+                    <div class="input-group">
+                        <i class="fas fa-pills"></i>
+                        <input type="text" id="medication" name="medication" placeholder="e.g., Amoxicillin" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dosage">Dosage</label>
+                        <div class="input-group">
+                            <i class="fas fa-weight-hanging"></i>
+                            <input type="text" id="dosage" name="dosage" placeholder="e.g., 500mg" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="frequency">Frequency</label>
+                        <div class="input-group">
+                            <i class="fas fa-redo"></i>
+                            <input type="text" id="frequency" name="frequency" placeholder="e.g., Twice a day" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="duration">Duration</label>
+                    <div class="input-group">
+                        <i class="fas fa-calendar-day"></i>
+                        <input type="text" id="duration" name="duration" placeholder="e.g., 7 days" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Additional Notes</label>
+                    <div class="input-group">
+                        <i class="fas fa-sticky-note"></i>
+                        <textarea id="notes" name="notes" rows="3" placeholder="e.g., Take with food..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">
+                    <i class="fas fa-save"></i> Save Prescription
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

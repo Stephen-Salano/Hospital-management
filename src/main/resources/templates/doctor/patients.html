@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="~{layout/doctor_layout :: head('My Patients')}"></head>
+    <link rel="stylesheet" th:href="@{/css/appointments_table.css}"/>
+</head>
+<body>
+<div th:replace="~{layout/doctor_layout :: page(pageTitle='My Patients', activePage='patients', pageContent=~{::.content})}">
+    <div class="content">
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email & Phone</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Medical Notes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="patient : ${patients}">
+                    <td th:text="${patient.fullName}">Patient Name</td>
+                    <td>
+                        <div>
+                            <span th:text="${patient.email}">patient@email.com</span><br>
+                            <small th:text="${patient.phone}" style="color: #666;">0712345678</small>
+                        </div>
+                    </td>
+                    <td th:text="${patient.age}">30</td>
+                    <td th:text="${patient.gender}">MALE</td>
+                    <td th:text="${patient.medicalNotes ?: 'N/A'}">Notes</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

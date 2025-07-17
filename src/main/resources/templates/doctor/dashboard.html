@@ -1,33 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Doctor Dashboard</title>
+    <head th:replace="~{layout/doctor_layout :: head('Doctor Dashboard')}"></head>
     <style>
-        body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; }
-        .container { max-width: 800px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 30px; }
-        h1 { color: #007bff; }
-        .info { margin-bottom: 20px; }
-        .info p { margin: 6px 0; }
-        .logout-btn { display: inline-block; background: #dc3545; color: #fff; padding: 8px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; }
-        .logout-btn:hover { background: #b52a37; }
+        .content { padding: 20px; }
+        .section-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .section-box { background-color: var(--white); padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px var(--shadow); transition: transform 0.3s, box-shadow 0.3s; text-align: center; }
+        .section-box:hover { transform: translateY(-5px); box-shadow: 0 4px 8px var(--shadow); }
+        .section-box i { font-size: 2.5rem; color: var(--nav); margin-bottom: 15px; }
+        .section-box h3 { margin-bottom: 10px; color: var(--nav); }
+        .section-box p { margin-bottom: 20px; color: var(--text); opacity: 0.8; }
+        .section-box .btn { background-color: var(--nav); color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; display: inline-block; }
+        .section-box .btn:hover { background-color: var(--active-bg); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome, <span th:text="${user.firstName}"></span>!</h1>
-        <div class="info">
-            <p><strong>Full Name:</strong> <span th:text="${user.firstName}"></span> <span th:text="${user.middleName}"></span> <span th:text="${user.lastName}"></span></p>
-            <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
-            <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
-            <p><strong>Phone:</strong> <span th:text="${user.phone}"></span></p>
-            <p><strong>Specialty:</strong> <span th:text="${user.specialty}"></span></p>
-            <p><strong>License Number:</strong> <span th:text="${user.licenseNumber}"></span></p>
-            <p><strong>Experience:</strong> <span th:text="${user.experience}"></span> years</p>
-            <p><strong>Gender:</strong> <span th:text="${user.gender}"></span></p>
-            <p><strong>Date of Birth:</strong> <span th:text="${user.dateOfBirth}"></span></p>
-            <p><strong>Address:</strong> <span th:text="${user.address}"></span></p>
+<div th:replace="~{layout/doctor_layout :: page(pageTitle='Doctor Dashboard', activePage='dashboard', pageContent=~{::.content})}">
+    <div class="content">
+        <!-- Action Cards -->
+        <div class="section-container">
+            <div class="section-box">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>View Your Schedule</h3>
+                <p>Check your upcoming appointments and manage your daily schedule.</p>
+                <a th:href="@{/doctor/schedule}" class="btn">View Schedule</a>
+            </div>
+
+            <div class="section-box">
+                <i class="fas fa-users"></i>
+                <h3>Manage Patients</h3>
+                <p>Access patient records, view medical histories, and add notes.</p>
+                <a th:href="@{/doctor/patients}" class="btn">View Patients</a>
+            </div>
+
+            <div class="section-box">
+                <i class="fas fa-file-prescription"></i>
+                <h3>Write Prescription</h3>
+                <p>Create and manage prescriptions for your patients.</p>
+                <a th:href="@{/doctor/write-prescription}" class="btn">New Prescription</a>
+            </div>
+
+            <div class="section-box">
+                <i class="fas fa-notes-medical"></i>
+                <h3>Add Medical Note</h3>
+                <p>Update a patient's medical records with new information.</p>
+                <a th:href="@{/doctor/write-record}" class="btn">Add Note</a>
+            </div>
+
+            <div class="section-box">
+                <i class="fas fa-user-md"></i>
+                <h3>Edit Your Profile</h3>
+                <p>Update your professional information and contact details.</p>
+                <a th:href="@{/doctor/profile}" class="btn">Edit Profile</a>
+            </div>
         </div>
-        <a th:href="@{/logout}" class="logout-btn">Logout</a>
     </div>
+</div>
 </body>
-</html> 
+</html>
