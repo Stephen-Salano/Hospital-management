@@ -63,13 +63,13 @@ The application is divided into three main user roles, each with a dedicated por
 <summary>Click to view application screenshots</summary>
 
 ### Admin Dashboard
-![Admin Dashboard](./docs/images/admin-dashboard.png)
+![Admin Dashboard](https://github.com/Stephen-Salano/Hospital-management/blob/master/docs/images/admin-dash.png)
 
 ### Doctor Dashboard
-![Doctor Dashboard](./docs/images/doctor-dashboard.png)
+![Doctor Dashboard](https://github.com/Stephen-Salano/Hospital-management/blob/master/docs/images/Doctor-dash.png)
 
 ### Patient Dashboard
-![Patient Dashboard](./docs/images/patient-dashboard.png)
+![Patient Dashboard](https://github.com/Stephen-Salano/Hospital-management/blob/master/docs/images/Patient-Dash.png)
 
 </details>
 
