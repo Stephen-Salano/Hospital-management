@@ -2,9 +2,14 @@ package com.hospital.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "doctors")
 public class Doctor {
@@ -96,99 +101,7 @@ public class Doctor {
         this.experience = experience;
         this.password = password;
     }
-    
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public String getSpecialty() {
-        return specialty;
-    }
-    
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
-    }
-    
-    public String getEmail() {
-        return email;
-    }
-    
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
-    public String getPhone() {
-        return phone;
-    }
-    
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    
-    public Gender getGender() {
-        return gender;
-    }
-    
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-    
-    public String getLicenseNumber() {
-        return licenseNumber;
-    }
-    
-    public void setLicenseNumber(String licenseNumber) {
-        this.licenseNumber = licenseNumber;
-    }
-    
-    public Integer getExperience() {
-        return experience;
-    }
-    
-    public void setExperience(Integer experience) {
-        this.experience = experience;
-    }
-    
-    public String getPassword() {
-        return password;
-    }
-    
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-    
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-    
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-    
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-    
-    public String getGenderString() {
-        return gender != null ? gender.name() : "";
-    }
-    
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-    public void setMiddleName(String middleName) { this.middleName = middleName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
-    public void setDateOfBirth(LocalDate dateOfBirth) { this.dateOfBirth = dateOfBirth; }
-    public void setAddress(String address) { this.address = address; }
-    public void setUsername(String username) { this.username = username; }
-    
+
     // Gender enum
     public enum Gender {
         MALE, FEMALE, OTHER

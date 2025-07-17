@@ -1,0 +1,14 @@
+# IDEs and OS
+.idea/
+.vscode/
+.DS_Store
+
+# Node
+node_modules/
+
+# Logs
+*.log
+
+# Build
+dist/
+target/

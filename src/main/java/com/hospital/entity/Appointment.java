@@ -2,14 +2,20 @@ package com.hospital.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "appointments")
 public class Appointment {
-    
+
+    // Getters and Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -80,112 +86,7 @@ public class Appointment {
     public Appointment() {
         this.createdAt = LocalDateTime.now();
     }
-    
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public String getPatientName() {
-        return patientName;
-    }
-    
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
-    }
-    
-    public String getPatientPhone() {
-        return patientPhone;
-    }
-    
-    public void setPatientPhone(String patientPhone) {
-        this.patientPhone = patientPhone;
-    }
-    
-    public String getPatientEmail() {
-        return patientEmail;
-    }
-    
-    public void setPatientEmail(String patientEmail) {
-        this.patientEmail = patientEmail;
-    }
-    
-    public Integer getPatientAge() {
-        return patientAge;
-    }
-    
-    public void setPatientAge(Integer patientAge) {
-        this.patientAge = patientAge;
-    }
-    
-    public LocalDate getAppointmentDate() {
-        return appointmentDate;
-    }
-    
-    public void setAppointmentDate(LocalDate appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
-    
-    public LocalTime getAppointmentTime() {
-        return appointmentTime;
-    }
-    
-    public void setAppointmentTime(LocalTime appointmentTime) {
-        this.appointmentTime = appointmentTime;
-    }
-    
-    public AppointmentType getAppointmentType() {
-        return appointmentType;
-    }
-    
-    public void setAppointmentType(AppointmentType appointmentType) {
-        this.appointmentType = appointmentType;
-    }
-    
-    public String getSymptoms() {
-        return symptoms;
-    }
-    
-    public void setSymptoms(String symptoms) {
-        this.symptoms = symptoms;
-    }
-    
-    public AppointmentStatus getStatus() {
-        return status;
-    }
-    
-    public void setStatus(AppointmentStatus status) {
-        this.status = status;
-    }
-    
-    public Doctor getDoctor() {
-        return doctor;
-    }
-    
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-    
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-    
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-    
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-    
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-    
+
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
