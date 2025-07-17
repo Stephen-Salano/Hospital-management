@@ -1,299 +1,355 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Patient Dashboard - Savannah Healthcare</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     /* Base Layout CSS */
     :root {
-        --bg: #F5EFE6;
-        --text: #4A403A;
-        --section-bg: #D4B59E;
-        --nav: #8C6E52;
-        --active-bg: #6F5B49;
-        --white: #FFFFFF;
-        --shadow: rgba(0,0,0,0.1);
+      --bg: #F5EFE6;
+      --text: #4A403A;
+      --section-bg: #D4B59E;
+      --nav: #8C6E52;
+      --active-bg: #6F5B49;
+      --white: #FFFFFF;
+      --shadow: rgba(0,0,0,0.1);
     }
 
     [data-theme="dark"] {
-        --bg: #1e1e1e;
-        --text: #f5f5f5;
-        --section-bg: #2d2d2d;
-        --nav: #3c3c3c;
-        --active-bg: #555;
-        --white: #2a2a2a;
+      --bg: #1e1e1e;
+      --text: #f5f5f5;
+      --section-bg: #2d2d2d;
+      --nav: #3c3c3c;
+      --active-bg: #555;
+      --white: #2a2a2a;
     }
 
     * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: var(--bg);
-        color: var(--text);
-        transition: all 0.3s ease;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background-color 0.3s, color 0.3s;
     }
 
     /* Sidebar Styles */
     .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        height: 100vh;
-        width: 250px;
-        background-color: var(--section-bg);
-        transition: width 0.3s ease;
-        overflow-x: hidden;
-        z-index: 1000;
-        box-shadow: 2px 0 5px var(--shadow);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100vh;
+      background-color: var(--section-bg);
+      transition: width 0.3s;
+      overflow-y: auto;
+      z-index: 1000;
     }
 
     .sidebar.collapsed {
-        width: 70px;
+      width: 70px;
     }
 
-    .sidebar-header {
-        background-color: var(--nav);
-        color: var(--white);
-        padding: 15px;
-        cursor: pointer;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-
-    .sidebar-header:hover {
-        background-color: var(--active-bg);
-    }
-
-    .sidebar-header i {
-        margin-right: 10px;
-    }
-
-    .sidebar.collapsed .sidebar-header .header-text {
-        display: none;
+    .sidebar h3 {
+      background-color: var(--nav);
+      color: white;
+      padding: 15px;
+      margin: 0;
+      text-align: center;
+      cursor: pointer;
+      font-size: 1rem;
     }
 
     .sidebar ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
 
     .sidebar li {
-        border-bottom: 1px solid rgba(0,0,0,0.1);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
     .sidebar a {
-        display: flex;
-        align-items: center;
-        padding: 15px 20px;
-        color: var(--text);
-        text-decoration: none;
-        transition: all 0.3s ease;
-        position: relative;
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      text-decoration: none;
+      color: var(--text);
+      transition: background-color 0.3s;
     }
 
     .sidebar a:hover {
-        background-color: var(--active-bg);
-        color: var(--white);
+      background-color: var(--active-bg);
+      color: white;
     }
 
     .sidebar a.active {
-        background-color: var(--nav);
-        color: var(--white);
-    }
-
-    .sidebar a.active::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 4px;
-        background-color: var(--white);
+      background-color: var(--active-bg);
+      color: white;
     }
 
     .sidebar i {
-        width: 20px;
-        text-align: center;
-        margin-right: 15px;
-        font-size: 16px;
+      margin-right: 10px;
+      min-width: 20px;
+      text-align: center;
     }
 
-    .sidebar.collapsed a span {
-        display: none;
+    .sidebar.collapsed span {
+      display: none;
     }
 
-    .sidebar.collapsed a {
-        justify-content: center;
-        padding: 15px 0;
-    }
-
-    .sidebar.collapsed i {
-        margin-right: 0;
-    }
-
-    /* Main Content Styles */
+    /* Main Content */
     .main-content {
-        margin-left: 250px;
-        min-height: 100vh;
-        transition: margin-left 0.3s ease;
+      margin-left: 250px;
+      transition: margin-left 0.3s;
+      min-height: 100vh;
     }
 
-    .sidebar.collapsed ~ .main-content {
-        margin-left: 70px;
+    .sidebar.collapsed + .main-content {
+      margin-left: 70px;
     }
 
-    /* Top Bar Styles */
+    /* Top Bar */
     .topbar {
-        background-color: var(--nav);
-        color: var(--white);
-        padding: 15px 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 5px var(--shadow);
+      background-color: var(--nav);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px var(--shadow);
     }
 
     .topbar h2 {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: 600;
+      margin: 0;
+      font-size: 1.5rem;
     }
 
-    .topbar-actions {
-        display: flex;
-        align-items: center;
-        gap: 20px;
+    .topbar .actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
-    .user-profile {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .user-avatar {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        background-color: var(--white);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--nav);
-        font-weight: bold;
+    .profile img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
     }
 
-    .theme-toggle {
-        cursor: pointer;
-        padding: 8px;
-        border-radius: 50%;
-        transition: background-color 0.3s ease;
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
 
-    .theme-toggle:hover {
-        background-color: var(--active-bg);
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
     }
 
-    .logout-btn {
-        padding: 8px 16px;
-        background-color: #dc3545;
-        color: var(--white);
-        text-decoration: none;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-    }
-
-    .logout-btn:hover {
-        background-color: #c82333;
+    .btn-danger:hover {
+      background-color: #c82333;
     }
 
     /* Content Area */
-    .content-area {
-        padding: 25px;
+    .content {
+      padding: 20px;
+    }
+
+    /* Patient Info Card */
+    .patient-info {
+      background-color: var(--white);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px var(--shadow);
+      margin-bottom: 30px;
+    }
+
+    .patient-info h3 {
+      margin-bottom: 15px;
+      color: var(--nav);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-item i {
+      color: var(--nav);
+      width: 20px;
+    }
+
+    .info-item strong {
+      min-width: 100px;
+    }
+
+    /* Section Boxes Grid */
+    .section-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .section-box {
+      background-color: var(--white);
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px var(--shadow);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+    }
+
+    .section-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px var(--shadow);
+    }
+
+    .section-box i {
+      font-size: 2.5rem;
+      color: var(--nav);
+      margin-bottom: 15px;
+    }
+
+    .section-box h3 {
+      margin-bottom: 10px;
+      color: var(--nav);
+    }
+
+    .section-box p {
+      margin-bottom: 20px;
+      color: var(--text);
+      opacity: 0.8;
+    }
+
+    .section-box .btn {
+      background-color: var(--nav);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .section-box .btn:hover {
+      background-color: var(--active-bg);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background-color: rgba(255,255,255,0.1);
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
-        .sidebar {
-            transform: translateX(-100%);
-        }
+      .sidebar {
+        transform: translateX(-100%);
+      }
 
-        .sidebar.open {
-            transform: translateX(0);
-        }
+      .sidebar.open {
+        transform: translateX(0);
+      }
 
-        .main-content {
-            margin-left: 0;
-        }
+      .main-content {
+        margin-left: 0;
+      }
 
-        .sidebar.collapsed ~ .main-content {
-            margin-left: 0;
-        }
+      .topbar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
 
-        .topbar {
-            padding: 15px;
-        }
+      .topbar .actions {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
 
-        .topbar h2 {
-            font-size: 1.2rem;
-        }
+      .section-container {
+        grid-template-columns: 1fr;
+      }
+    }
 
-        .topbar-actions {
-            gap: 10px;
-        }
+    @media (max-width: 480px) {
+      .content {
+        padding: 10px;
+      }
 
-        .user-profile span {
-            display: none;
-        }
+      .patient-info {
+        padding: 15px;
+      }
+
+      .section-box {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
-<!-- Sidebar -->
 <div class="sidebar" id="sidebar">
-  <div class="sidebar-header" onclick="toggleSidebar()">
+  <h3 onclick="toggleSidebar()">
     <i class="fas fa-bars"></i>
-    <span class="header-text">Menu</span>
-  </div>
+    <span>Menu</span>
+  </h3>
   <ul>
     <li>
-      <a th:href="@{/patient/dashboard}"
-         th:classappend="${#httpServletRequest.requestURI == '/patient/dashboard' ? 'active' : ''}">
+      <a th:href="@{/patient/dashboard}" th:classappend="${#httpServletRequest.requestURI == '/patient/dashboard' ? 'active' : ''}">
         <i class="fas fa-home"></i>
         <span>Dashboard</span>
       </a>
     </li>
     <li>
-      <a th:href="@{/patient/profile}"
-         th:classappend="${#httpServletRequest.requestURI == '/patient/profile' ? 'active' : ''}">
+      <a th:href="@{/patient/profile}" th:classappend="${#httpServletRequest.requestURI == '/patient/profile' ? 'active' : ''}">
         <i class="fas fa-user"></i>
         <span>Profile</span>
       </a>
     </li>
     <li>
-      <a th:href="@{/patient/appointments}"
-         th:classappend="${#httpServletRequest.requestURI == '/patient/appointments' ? 'active' : ''}">
+      <a th:href="@{/patient/appointments}" th:classappend="${#httpServletRequest.requestURI == '/patient/appointments' ? 'active' : ''}">
         <i class="fas fa-calendar-check"></i>
         <span>Appointments</span>
       </a>
     </li>
     <li>
-      <a th:href="@{/patient/prescriptions}"
-         th:classappend="${#httpServletRequest.requestURI == '/patient/prescriptions' ? 'active' : ''}">
+      <a th:href="@{/patient/prescriptions}" th:classappend="${#httpServletRequest.requestURI == '/patient/prescriptions' ? 'active' : ''}">
         <i class="fas fa-prescription-bottle-alt"></i>
         <span>Prescriptions</span>
       </a>
     </li>
     <li>
-      <a th:href="@{/patient/view-records}"
-         th:classappend="${#httpServletRequest.requestURI == '/patient/view-records' ? 'active' : ''}">
+      <a th:href="@{/patient/view-records}" th:classappend="${#httpServletRequest.requestURI == '/patient/view-records' ? 'active' : ''}">
         <i class="fas fa-file-medical"></i>
         <span>Medical Records</span>
       </a>
@@ -307,79 +363,122 @@
   </ul>
 </div>
 
-<!-- Main Content -->
 <div class="main-content">
-  <!-- Top Bar -->
   <div class="topbar">
-    <h2 id="page-title">Dashboard</h2>
-    <div class="topbar-actions">
-      <div class="user-profile">
-        <div class="user-avatar">
-          <i class="fas fa-user"></i>
-        </div>
+    <h2 th:text="'Welcome back, ' + ${user.fullName} + '!'">Welcome back, Patient!</h2>
+    <div class="actions">
+      <div class="profile">
+        <img src="/images/patient-avatar.png" alt="Patient Avatar" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHZpZXdCb3g9IjAgMCAzNSAzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTcuNSIgY3k9IjE3LjUiIHI9IjE3LjUiIGZpbGw9IiM2NjY2NjYiLz4KPGNpcmNsZSBjeD0iMTcuNSIgY3k9IjE0IiByPSI2IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0zMC41IDI5LjVDMzAuNSAyMy43IDI0LjMgMTkgMTcuNSAxOUMxMC43IDE5IDQuNSAyMy43IDQuNSAyOS41IiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPgo='" />
         <span th:text="${user.username}">Username</span>
       </div>
       <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-        <i class="fas fa-moon"></i>
+        <i class="fas fa-adjust"></i>
       </div>
-      <a th:href="@{/logout}" class="logout-btn">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </a>
+      <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
     </div>
   </div>
 
-  <!-- Content Area -->
-  <div class="content-area">
-    <!-- Page content will go here -->
-    <p>This is the base layout. Page-specific content will be added here.</p>
+  <div class="content">
+    <!-- Patient Info Card -->
+    <div class="patient-info">
+      <h3><i class="fas fa-user"></i> Your Information</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <i class="fas fa-envelope"></i>
+          <strong>Email:</strong>
+          <span th:text="${user.email}">patient@example.com</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          <strong>Phone:</strong>
+          <span th:text="${user.phone}">+254712345678</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <strong>Address:</strong>
+          <span th:text="${user.address}">Nairobi, Kenya</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-birthday-cake"></i>
+          <strong>Date of Birth:</strong>
+          <span th:text="${#temporals.format(user.dateOfBirth, 'MMMM dd, yyyy')}">January 01, 1990</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-venus-mars"></i>
+          <strong>Gender:</strong>
+          <span th:text="${user.gender}">Male</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Boxes Grid -->
+    <div class="section-container">
+      <div class="section-box">
+        <i class="fas fa-calendar-check"></i>
+        <h3>Appointments</h3>
+        <p>View and manage your upcoming appointments with healthcare providers.</p>
+        <a th:href="@{/patient/appointments}" class="btn">View Appointments</a>
+      </div>
+
+      <div class="section-box">
+        <i class="fas fa-prescription-bottle-alt"></i>
+        <h3>Prescriptions</h3>
+        <p>Access your current prescriptions and medication history.</p>
+        <a th:href="@{/patient/prescriptions}" class="btn">View Prescriptions</a>
+      </div>
+
+      <div class="section-box">
+        <i class="fas fa-file-medical"></i>
+        <h3>Medical Records</h3>
+        <p>Review your medical history, test results, and health records.</p>
+        <a th:href="@{/patient/view-records}" class="btn">View Records</a>
+      </div>
+
+      <div class="section-box">
+        <i class="fas fa-user-edit"></i>
+        <h3>Profile</h3>
+        <p>Update your personal information and account settings.</p>
+        <a th:href="@{/patient/profile}" class="btn">Edit Profile</a>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-  // Toggle Sidebar Function
   function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('collapsed');
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('collapsed');
 
-      // On mobile, toggle open class instead
-      if (window.innerWidth <= 768) {
-          sidebar.classList.toggle('open');
-      }
+    // For mobile, toggle open class instead
+    if (window.innerWidth <= 768) {
+      sidebar.classList.toggle('open');
+    }
   }
 
-  // Toggle Theme Function
   function toggleTheme() {
-      const html = document.documentElement;
-      const currentTheme = html.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-
-      // Update theme toggle icon
-      const themeIcon = document.querySelector('.theme-toggle i');
-      themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
   }
 
-  // Initialize theme on page load
-  window.addEventListener('DOMContentLoaded', function() {
-      const savedTheme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+  // Apply saved theme on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = savedTheme || (prefersDark ? 'dark' : 'light');
 
-      document.documentElement.setAttribute('data-theme', theme);
-
-      // Set initial theme icon
-      const themeIcon = document.querySelector('.theme-toggle i');
-      themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    document.documentElement.setAttribute('data-theme', theme);
   });
 
-  // Handle mobile sidebar
+  // Handle responsive sidebar
   window.addEventListener('resize', function() {
-      const sidebar = document.getElementById('sidebar');
-      if (window.innerWidth > 768) {
-          sidebar.classList.remove('open');
-      }
+    const sidebar = document.getElementById('sidebar');
+    if (window.innerWidth > 768) {
+      sidebar.classList.remove('open');
+    }
   });
 </script>
 </body>
