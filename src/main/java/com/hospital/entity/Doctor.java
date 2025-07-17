@@ -81,6 +81,11 @@ public class Doctor {
     @Column(unique = true, nullable = false)
     private String username;
     
+    // A doctor belongs to one department
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
+    
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
