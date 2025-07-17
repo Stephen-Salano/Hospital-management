@@ -40,7 +40,7 @@ public class PatientController {
         if (patient == null){
             return "redirect:/login";
         }
-        List<Appointment> appointments = appointmentService.getAppointmentsByPatientEmail(patient.getEmail());
+        List<Appointment> appointments = appointmentService.getAppointmentsByPatientId(patient.getId());
         model.addAttribute("appointments", appointments);
         model.addAttribute("activePage", "appointments");
         return "patient/appointments";

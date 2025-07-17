@@ -227,12 +227,24 @@
 
   <!-- Patient Form -->
   <div id="patient" class="form-section">
-    <form th:action="@{/admin/save-patient}" method="POST" onsubmit="return validatePatient()">
-      <label>Full Name</label>
+    <form th:action="@{/admin/save-patient}" method="POST">
+      <label>First Name</label>
       <div class="input-group">
         <i class="fa fa-user"></i>
-        <input type="text" name="fullName" placeholder="John Doe" required>
+        <input type="text" name="firstName" placeholder="John" required>
       </div>
+
+      <label>Middle Name (optional)</label>
+      <div class="input-group">
+        <i class="fa fa-user"></i>
+        <input type="text" name="middleName" placeholder="M.">
+      </div>
+      
+      <label>Last Name</label>
+        <div class="input-group">
+            <i class="fa fa-user"></i>
+            <input type="text" name="lastName" placeholder="Doe" required>
+        </div>
 
       <label>Date of Birth</label>
       <div class="input-group">
@@ -273,6 +285,18 @@
       <div class="input-group">
         <i class="fa fa-notes-medical"></i>
         <textarea name="medicalNotes" rows="3" placeholder="Any existing conditions, allergies..."></textarea>
+      </div>
+
+      <label>Username</label>
+      <div class="input-group">
+          <i class="fa fa-at"></i>
+          <input type="text" name="username" placeholder="Create a username" required>
+      </div>
+
+      <label>Password</label>
+      <div class="input-group">
+          <i class="fa fa-lock"></i>
+          <input type="password" name="password" placeholder="Create a strong password" required>
       </div>
 
       <input type="submit" value="Add Patient">

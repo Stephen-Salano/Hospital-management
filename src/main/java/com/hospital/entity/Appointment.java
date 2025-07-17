@@ -24,25 +24,6 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotBlank(message = "Patient name is required")
-    @Column(name = "patient_name", nullable = false)
-    private String patientName;
-    
-    @NotBlank(message = "Patient phone is required")
-    @Column(name = "patient_phone", nullable = false)
-    private String patientPhone;
-    
-    @NotBlank(message = "Patient email is required")
-    @Email(message = "Please provide a valid email address")
-    @Column(name = "patient_email", nullable = false)
-    private String patientEmail;
-    
-    @NotNull(message = "Patient age is required")
-    @Min(value = 1, message = "Age must be at least 1")
-    @Max(value = 120, message = "Age cannot exceed 120")
-    @Column(name = "patient_age", nullable = false)
-    private Integer patientAge;
-    
     @NotNull(message = "Appointment date is required")
     @Column(name = "appointment_date", nullable = false)
     private LocalDate appointmentDate;
@@ -65,6 +46,10 @@ public class Appointment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", nullable = false)
+    private Patient patient;
     
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -86,6 +71,12 @@ public class Appointment {
         COMPLETED
     }
 
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
@@ -95,7 +86,7 @@ public class Appointment {
     public String toString() {
         return "Appointment{" +
                 "id=" + id +
-                ", patientName='" + patientName + '\'' +
+                ", patient=" + (patient != null ? patient.getFullName() : "null") +
                 ", appointmentDate=" + appointmentDate +
                 ", appointmentTime=" + appointmentTime +
                 ", status=" + status +

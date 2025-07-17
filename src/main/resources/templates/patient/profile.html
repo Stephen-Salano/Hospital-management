@@ -8,165 +8,173 @@
     <style>
         /* Base Layout CSS */
         :root {
-          --bg: #F5EFE6;
-          --text: #4A403A;
-          --section-bg: #D4B59E;
-          --nav: #8C6E52;
-          --active-bg: #6F5B49;
-          --white: #FFFFFF;
-          --shadow: rgba(0,0,0,0.1);
+            --bg: #F5EFE6;
+            --text: #4A403A;
+            --section-bg: #D4B59E;
+            --nav: #8C6E52;
+            --active-bg: #6F5B49;
+            --white: #FFFFFF;
+            --shadow: rgba(0,0,0,0.1);
         }
 
         [data-theme="dark"] {
-          --bg: #1e1e1e;
-          --text: #f5f5f5;
-          --section-bg: #2d2d2d;
-          --nav: #3c3c3c;
-          --active-bg: #555;
-          --white: #2a2a2a;
+            --bg: #1e1e1e;
+            --text: #f5f5f5;
+            --section-bg: #2d2d2d;
+            --nav: #3c3c3c;
+            --active-bg: #555;
+            --white: #2a2a2a;
         }
 
         * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-          font-family: Arial, sans-serif;
-          background-color: var(--bg);
-          color: var(--text);
-          transition: background-color 0.3s, color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: all 0.3s ease;
         }
 
         /* Sidebar Styles */
         .sidebar {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 250px;
-          height: 100vh;
-          background-color: var(--section-bg);
-          transition: width 0.3s;
-          overflow-y: auto;
-          z-index: 1000;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: var(--section-bg);
+            padding: 20px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
         }
 
         .sidebar.collapsed {
-          width: 70px;
+            width: 70px;
         }
 
-        .sidebar h3 {
-          background-color: var(--nav);
-          color: white;
-          padding: 15px;
-          margin: 0;
-          text-align: center;
-          cursor: pointer;
-          font-size: 1rem;
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--nav);
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .sidebar-header i {
+            font-size: 24px;
+            color: var(--nav);
+        }
+
+        .sidebar-header h3 {
+            margin-left: 10px;
+            font-size: 18px;
+            color: var(--text);
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-header h3 {
+            opacity: 0;
         }
 
         .sidebar ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
+            list-style: none;
         }
 
-        .sidebar li {
-          border-bottom: 1px solid rgba(0,0,0,0.05);
+        .sidebar ul li {
+            margin-bottom: 10px;
         }
 
-        .sidebar a {
-          display: flex;
-          align-items: center;
-          padding: 15px 20px;
-          text-decoration: none;
-          color: var(--text);
-          transition: background-color 0.3s;
+        .sidebar ul li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 10px;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
-        .sidebar a:hover {
-          background-color: var(--active-bg);
-          color: white;
+        .sidebar ul li a:hover {
+            background: var(--nav);
+            color: var(--white);
         }
 
-        .sidebar a.active {
-          background-color: var(--active-bg);
-          color: white;
+        .sidebar ul li a.active {
+            background: var(--active-bg);
+            color: var(--white);
         }
 
-        .sidebar i {
-          margin-right: 10px;
-          min-width: 20px;
-          text-align: center;
+        .sidebar ul li a i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
         }
 
-        .sidebar.collapsed span {
-          display: none;
+        .sidebar ul li a span {
+            margin-left: 10px;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed ul li a span {
+            opacity: 0;
         }
 
         /* Main Content */
         .main-content {
-          margin-left: 250px;
-          transition: margin-left 0.3s;
-          min-height: 100vh;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
         }
 
-        .sidebar.collapsed + .main-content {
-          margin-left: 70px;
+        .sidebar.collapsed ~ .main-content {
+            margin-left: 70px;
         }
 
         /* Top Bar */
         .topbar {
-          background-color: var(--nav);
-          color: white;
-          padding: 15px 20px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          box-shadow: 0 2px 4px var(--shadow);
+            background: var(--nav);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px var(--shadow);
         }
 
         .topbar h2 {
-          margin: 0;
-          font-size: 1.5rem;
+            color: var(--white);
+            font-size: 20px;
         }
 
-        .topbar .actions {
-          display: flex;
-          align-items: center;
-          gap: 15px;
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .profile {
-          display: flex;
-          align-items: center;
-          gap: 10px;
+        .topbar-right .username {
+            color: var(--white);
+            font-weight: 500;
         }
 
-        .profile img {
-          width: 35px;
-          height: 35px;
-          border-radius: 50%;
-          object-fit: cover;
+        .topbar-right button {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background 0.3s ease;
         }
 
-        .btn {
-          padding: 8px 16px;
-          border: none;
-          border-radius: 4px;
-          text-decoration: none;
-          cursor: pointer;
-          transition: background-color 0.3s;
-        }
-
-        .btn-danger {
-          background-color: #dc3545;
-          color: white;
-        }
-
-        .btn-danger:hover {
-          background-color: #c82333;
+        .topbar-right button:hover {
+            background: var(--active-bg);
         }
 
         /* Content Area */
@@ -360,10 +368,10 @@
 </head>
 <body>
 <div class="sidebar" id="sidebar">
-    <h3 onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-        <span>Menu</span>
-    </h3>
+    <div class="sidebar-header" onclick="toggleSidebar()">
+        <i class="fas fa-hospital"></i>
+        <h3>Patient Portal</h3>
+    </div>
     <ul>
         <li>
             <a th:href="@{/patient/dashboard}" th:classappend="${activePage == 'dashboard' ? 'active' : ''}">
@@ -407,15 +415,14 @@
 <div class="main-content">
     <div class="topbar">
         <h2>My Profile</h2>
-        <div class="actions">
-            <div class="profile">
-                <img src="/images/patient-avatar.png" alt="Patient Avatar" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHZpZXdCb3g9IjAgMCAzNSAzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTcuNSIgY3k9IjE3LjUiIHI9IjE3LjUiIGZpbGw9IiM2NjY2NjYiLz4KPGNpcmNsZSBjeD0iMTcuNSIgY3k9IjE0IiByPSI2IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0zMC41IDI5LjVDMzAuNSAyMy43IDI0LjMgMTkgMTcuNSAxOUMxMC43IDE5IDQuNSAyMy43IDQuNSAyOS41IiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPgo='" />
-                <span th:text="${user.username}">Username</span>
-            </div>
-            <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-                <i class="fas fa-adjust"></i>
-            </div>
-            <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+        <div class="topbar-right">
+            <span class="username" th:text="${user.username}">Username</span>
+            <button onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+            <a th:href="@{/logout}" style="color: var(--white); text-decoration: none;">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
         </div>
     </div>
 
@@ -515,39 +522,31 @@
 
 <script>
     function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('collapsed');
-
-      // For mobile, toggle open class instead
-      if (window.innerWidth <= 768) {
-        sidebar.classList.toggle('open');
-      }
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('collapsed');
     }
 
     function toggleTheme() {
-      const html = document.documentElement;
-      const currentTheme = html.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+
+        // Update theme toggle icon
+        const themeIcon = document.querySelector('.topbar-right button i');
+        themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     }
 
     // Apply saved theme on page load
     document.addEventListener('DOMContentLoaded', function() {
-      const savedTheme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
 
-      document.documentElement.setAttribute('data-theme', theme);
-    });
-
-    // Handle responsive sidebar
-    window.addEventListener('resize', function() {
-      const sidebar = document.getElementById('sidebar');
-      if (window.innerWidth > 768) {
-        sidebar.classList.remove('open');
-      }
+        // Update theme toggle icon
+        const themeIcon = document.querySelector('.topbar-right button i');
+        themeIcon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     });
 </script>
 </body>

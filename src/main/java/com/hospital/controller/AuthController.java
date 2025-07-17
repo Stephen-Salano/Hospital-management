@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import com.hospital.entity.Doctor;
 import com.hospital.service.DoctorService;
+import com.hospital.entity.BaseUser;
 import com.hospital.entity.Admin;
 import com.hospital.service.AdminService;
 
@@ -38,6 +39,12 @@ public class AuthController {
         return "register";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
+
     @PostMapping("/register")
     public String registerUser(@RequestParam String firstName,
                                @RequestParam(required = false) String middleName,
@@ -60,7 +67,7 @@ public class AuthController {
                 patient.setEmail(email);
                 patient.setPhone(phone);
                 patient.setDateOfBirth(LocalDate.parse(dateOfBirth));
-                patient.setGender(Patient.Gender.valueOf(gender.toUpperCase()));
+                patient.setGender(BaseUser.Gender.valueOf(gender.toUpperCase()));
                 patient.setAddress(address);
                 patient.setUsername(username);
                 patient.setPassword(password);
@@ -73,7 +80,7 @@ public class AuthController {
                 doctor.setEmail(email);
                 doctor.setPhone(phone);
                 doctor.setDateOfBirth(LocalDate.parse(dateOfBirth));
-                doctor.setGender(Doctor.Gender.valueOf(gender.toUpperCase()));
+                doctor.setGender(BaseUser.Gender.valueOf(gender.toUpperCase()));
                 doctor.setAddress(address);
                 doctor.setUsername(username);
                 doctor.setPassword(password);
@@ -90,7 +97,7 @@ public class AuthController {
                 admin.setEmail(email);
                 admin.setPhone(phone);
                 admin.setDateOfBirth(LocalDate.parse(dateOfBirth));
-                admin.setGender(Admin.Gender.valueOf(gender.toUpperCase()));
+                admin.setGender(BaseUser.Gender.valueOf(gender.toUpperCase()));
                 admin.setAddress(address);
                 admin.setUsername(username);
                 admin.setPassword(password);
@@ -143,7 +150,7 @@ public class AuthController {
                 return "login";
             }
         } else if (userType.equals("ADMIN")) {
-            Optional<Admin> adminOpt = Optional.ofNullable(adminService.findByUsername(username));
+            Optional<Admin> adminOpt = adminService.getAdminByUsername(username);
             if(adminOpt.isPresent() && adminOpt.get().getPassword().equals(adminService.hashPassword(password))) {
                 session.setAttribute("user", adminOpt.get());
                 System.out.println("[DEBUG] Admin login successful: " + username);

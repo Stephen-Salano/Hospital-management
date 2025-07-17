@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 @Getter
 @Setter
@@ -74,5 +75,12 @@ public abstract class BaseUser {
 
     public String getFullName() {
         return firstName + (middleName != null && !middleName.isEmpty() ? " " + middleName : "") + " " + lastName;
+    }
+    @Transient
+    public Integer getAge(){
+        if (this.dateOfBirth == null){
+            return null;
+        }
+        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
 }

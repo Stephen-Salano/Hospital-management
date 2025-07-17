@@ -2,6 +2,8 @@ package com.hospital.controller;
 
 import com.hospital.entity.Appointment;
 import com.hospital.entity.Doctor;
+import com.hospital.entity.Patient;
+import com.hospital.service.PatientService;
 import com.hospital.service.AppointmentService;
 import com.hospital.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class HomeController {
     
     @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    private PatientService patientService;
 
     @GetMapping("/")
     public String home() {
@@ -53,17 +58,13 @@ public class HomeController {
     @GetMapping("/book-appointment")
     public String bookAppointment(Model model) {
         // Get all available doctors for the dropdown
-        List<Doctor> doctors = doctorService.getAllDoctors();
-        model.addAttribute("doctors", doctors);
+        populateBookingFormModel(model);
         return "booking-appointment";
     }
 
     @PostMapping("/book-appointment")
     public String bookAppointment(
-            @RequestParam String patientName,
-            @RequestParam String patientPhone,
-            @RequestParam String patientEmail,
-            @RequestParam int patientAge,
+            @RequestParam Long patientId,
             @RequestParam Long doctorId,
             @RequestParam String appointmentDate,
             @RequestParam String appointmentTime,
@@ -72,55 +73,48 @@ public class HomeController {
             Model model) {
         
         try {
-            // Sanitize inputs
-            patientName = patientName.trim();
-            patientPhone = patientPhone.trim();
-            patientEmail = patientEmail.trim().toLowerCase();
             symptoms = symptoms != null ? symptoms.trim() : "";
             
             // Parse date and time
             LocalDate date = LocalDate.parse(appointmentDate);
             LocalTime time = LocalTime.parse(appointmentTime);
-            
+
+            // Get patient and doctor
+            Patient patient = patientService.getPatientById(patientId)
+                    .orElseThrow(() -> new RuntimeException("Patient not found"));
+            Doctor doctor = doctorService.getDoctorById(doctorId)
+                    .orElseThrow(() -> new RuntimeException("Doctor not found"));
+
             // Create Appointment entity
             Appointment appointment = new Appointment();
-            appointment.setPatientName(patientName);
-            appointment.setPatientPhone(patientPhone);
-            appointment.setPatientEmail(patientEmail);
-            appointment.setPatientAge(patientAge);
             appointment.setAppointmentDate(date);
             appointment.setAppointmentTime(time);
             appointment.setAppointmentType(Appointment.AppointmentType.valueOf(appointmentType));
             appointment.setSymptoms(symptoms.isEmpty() ? null : symptoms);
             
             // Set doctor
-            Doctor doctor = doctorService.getDoctorById(doctorId)
-                    .orElseThrow(() -> new RuntimeException("Doctor not found"));
             appointment.setDoctor(doctor);
+            appointment.setPatient(patient);
             
             // Save appointment
             Appointment savedAppointment = appointmentService.saveAppointment(appointment);
             
             model.addAttribute("success", "Appointment booked successfully! Your appointment ID is: " + savedAppointment.getId());
             
-            // Re-add doctors for the form
-            List<Doctor> doctors = doctorService.getAllDoctors();
-            model.addAttribute("doctors", doctors);
-            
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
-            
-            // Re-add doctors for the form
-            List<Doctor> doctors = doctorService.getAllDoctors();
-            model.addAttribute("doctors", doctors);
         } catch (Exception e) {
             model.addAttribute("error", "An error occurred while booking the appointment. Please try again.");
-            
-            // Re-add doctors for the form
-            List<Doctor> doctors = doctorService.getAllDoctors();
-            model.addAttribute("doctors", doctors);
         }
         
+        // Always re-populate the form data
+        populateBookingFormModel(model);
         return "booking-appointment";
+    }
+
+    private void populateBookingFormModel(Model model) {
+        model.addAttribute("doctors", doctorService.getAllDoctors());
+        model.addAttribute("patients", patientService.getAllPatients());
+        model.addAttribute("todayDate", LocalDate.now().toString());
     }
 } 

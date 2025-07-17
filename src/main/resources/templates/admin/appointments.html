@@ -334,7 +334,7 @@
             <tbody>
                 <tr th:each="appointment : ${allAppointments}">
                     <td th:text="${appointment.id}">1</td>
-                    <td th:text="${appointment.patientName}">John Doe</td>
+                    <td th:text="${appointment.patient.fullName}">John Doe</td>
                     <td th:text="${appointment.doctor.fullName + ' - ' + appointment.doctor.specialty}">Dr. Smith - Cardiology</td>
                     <td>
                         <span th:text="${#temporals.format(appointment.appointmentDate, 'dd/MM/yyyy')}">01/01/2024</span><br>
@@ -346,8 +346,8 @@
                               th:text="${appointment.status}">PENDING</span>
                     </td>
                     <td>
-                        <div th:text="${appointment.patientPhone}">+1234567890</div>
-                        <div th:text="${appointment.patientEmail}">patient@email.com</div>
+                        <div th:text="${appointment.patient.phone}">+1234567890</div>
+                        <div th:text="${appointment.patient.email}">patient@email.com</div>
                     </td>
                     <td>
                         <div class="action-buttons">

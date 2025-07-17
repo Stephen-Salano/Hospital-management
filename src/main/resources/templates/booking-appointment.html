@@ -208,11 +208,19 @@
             
             <div class="form-row">
                 <div class="form-group">
-                    <label for="patientName">Full Name</label>
+                    <label for="patientId">Select Patient</label>
                     <div class="input-group">
                         <i class="fa fa-user"></i>
-                        <input type="text" id="patientName" name="patientName" required 
-                               placeholder="Enter your full name">
+                        <select id="patientId" name="patientId" required>
+                            <option value="">Choose an existing patient...</option>
+                            <option th:each="p : ${patients}"
+                                    th:value="${p.id}"
+                                    th:text="${p.fullName + ' (' + p.email + ')'}"
+                                    th:data-phone="${p.phone}"
+                                    th:data-email="${p.email}"
+                                    th:data-age="${p.age}">
+                            </option>
+                        </select>
                     </div>
                 </div>
                 
@@ -220,8 +228,8 @@
                     <label for="patientPhone">Phone Number</label>
                     <div class="input-group">
                         <i class="fa fa-phone"></i>
-                        <input type="tel" id="patientPhone" name="patientPhone" required 
-                               placeholder="Enter your phone number">
+                        <input type="tel" id="patientPhone" name="patientPhone" readonly
+                               placeholder="Patient's phone">
                     </div>
                 </div>
             </div>
@@ -231,8 +239,8 @@
                     <label for="patientEmail">Email</label>
                     <div class="input-group">
                         <i class="fa fa-envelope"></i>
-                        <input type="email" id="patientEmail" name="patientEmail" required 
-                               placeholder="Enter your email address">
+                        <input type="email" id="patientEmail" name="patientEmail" readonly
+                               placeholder="Patient's email">
                     </div>
                 </div>
                 
@@ -240,8 +248,8 @@
                     <label for="patientAge">Age</label>
                     <div class="input-group">
                         <i class="fa fa-birthday-cake"></i>
-                        <input type="number" id="patientAge" name="patientAge" required 
-                               min="1" max="120" placeholder="Enter your age">
+                        <input type="number" id="patientAge" name="patientAge" readonly
+                               placeholder="Patient's age">
                     </div>
                 </div>
             </div>
@@ -269,8 +277,8 @@
                     <label for="appointmentDate">Preferred Date</label>
                     <div class="input-group">
                         <i class="fa fa-calendar"></i>
-                        <input type="date" id="appointmentDate" name="appointmentDate" required 
-                               th:min="${#temporals.format(#temporals.createToday(), 'yyyy-MM-dd')}">
+                        <input type="date" id="appointmentDate" name="appointmentDate" required
+                               th:min="${todayDate}">
                     </div>
                 </div>
             </div>
@@ -321,7 +329,7 @@
     </form>
 
     <div class="back-link">
-        <a th:href="@{/}">← Back to Home</a>
+        <a th:href="@{/admin/dashboard}">← Back to Home</a>
     </div>
 </div>
 
@@ -331,34 +339,25 @@
     document.getElementById('appointmentDate').min = today;
     
     // Form validation
-    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
-        const patientName = document.getElementById('patientName').value.trim();
-        const patientPhone = document.getElementById('patientPhone').value.trim();
-        const patientEmail = document.getElementById('patientEmail').value.trim();
-        const patientAge = document.getElementById('patientAge').value;
+    document.getElementById('appointmentForm').addEventListener('submit', function (e) {
         const doctorId = document.getElementById('doctorId').value;
+        const patientId = document.getElementById('patientId').value;
         const appointmentDate = document.getElementById('appointmentDate').value;
         const appointmentTime = document.getElementById('appointmentTime').value;
         const appointmentType = document.getElementById('appointmentType').value;
         
-        if (!patientName || !patientPhone || !patientEmail || !patientAge || 
-            !doctorId || !appointmentDate || !appointmentTime || !appointmentType) {
+        if (!patientId || !doctorId || !appointmentDate || !appointmentTime || !appointmentType) {
             e.preventDefault();
             alert('Please fill in all required fields.');
-            return;
         }
-        
-        if (patientAge < 1 || patientAge > 120) {
-            e.preventDefault();
-            alert('Please enter a valid age between 1 and 120.');
-            return;
-        }
-        
-        if (appointmentDate < today) {
-            e.preventDefault();
-            alert('Please select a future date for your appointment.');
-            return;
-        }
+    });
+    
+    // Auto-populate patient details on selection
+    document.getElementById('patientId').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        document.getElementById('patientPhone').value = selectedOption.getAttribute('data-phone') || '';
+        document.getElementById('patientEmail').value = selectedOption.getAttribute('data-email') || '';
+        document.getElementById('patientAge').value = selectedOption.getAttribute('data-age') || '';
     });
 </script>
 

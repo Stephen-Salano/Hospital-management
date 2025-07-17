@@ -72,8 +72,8 @@ public class AppointmentService {
         return appointmentRepository.findByDoctorOrderByAppointmentDateDescAppointmentTimeDesc(doctor);
     }
     
-    public List<Appointment> getAppointmentsByPatientEmail(String patientEmail) {
-        return appointmentRepository.findByPatientEmailOrderByAppointmentDateDescAppointmentTimeDesc(patientEmail);
+    public List<Appointment> getAppointmentsByPatientId(Long patientId) {
+        return appointmentRepository.findByPatientIdOrderByAppointmentDateDescAppointmentTimeDesc(patientId);
     }
     
     public List<Appointment> getAppointmentsByStatus(Appointment.AppointmentStatus status) {
