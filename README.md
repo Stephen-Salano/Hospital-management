@@ -59,8 +59,6 @@ The application is divided into three main user roles, each with a dedicated por
 
 ## Screenshots
 
-<details>
-<summary>Click to view application screenshots</summary>
 
 ### Admin Dashboard
 ![Admin Dashboard](https://github.com/Stephen-Salano/Hospital-management/blob/master/docs/images/admin-dash.png)
@@ -74,7 +72,7 @@ The application is divided into three main user roles, each with a dedicated por
 ### Medical History
 ![Medical History](https://github.com/Stephen-Salano/Hospital-management/blob/master/docs/images/Patient-records.png)
 
-</details>
+
 
 ## Prerequisites
 
