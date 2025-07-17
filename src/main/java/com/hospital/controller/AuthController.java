@@ -114,33 +114,26 @@ public class AuthController {
                         HttpSession session) {
         System.out.println("[DEBUG] Login attempt: username=" + username + ", userType=" + userType);
         if (userType.equals("PATIENT")) {
-            Optional<Patient> patientOpt = patientService.getPatientByUsername(username);
-            System.out.println("[DEBUG] Patient found: " + patientOpt.isPresent());
-            if (patientOpt.isPresent()) {
+            Optional<Patient> patientOpt = patientService.getPatientByUsername(username);            
+            if (patientOpt.isPresent() && patientOpt.get().getPassword().equals(patientService.hashPassword(password))) {
                 Patient patient = patientOpt.get();
-                System.out.println("[DEBUG] Patient password match: " + patient.getPassword().equals(password));
-                if (patient.getPassword().equals(password)) {
                     session.setAttribute("user", patient);
                     System.out.println("[DEBUG] Patient login successful: " + username);
                     return "redirect:/patient/dashboard";
-                } else {
-                    System.out.println("[DEBUG] Patient login failed: wrong password");
-                    model.addAttribute("error", "Invalid username or password");
-                    return "login";
-                }
             } else {
                 System.out.println("[DEBUG] Patient login failed: user not found");
                 model.addAttribute("error", "Invalid username or password");
                 return "login";
             }
         } else if (userType.equals("DOCTOR")) {
-            Doctor doctor = null;
-            doctor = doctorService.findByEmail(username);
-            if (doctor == null) {
-                doctor = doctorService.findByLicenseNumber(username);
+            // Try finding doctor by username, then email
+            Optional<Doctor> doctorOpt = doctorService.getDoctorByUsername(username);
+            if (doctorOpt.isEmpty()){
+                doctorOpt = doctorService.getDoctorByEmail(username);
             }
-            System.out.println("[DEBUG] Doctor found: " + (doctor != null));
-            if (doctor != null && doctor.getPassword().equals(doctorService.hashPassword(password))) {
+
+            if (doctorOpt.isPresent() && doctorOpt.get().getPassword().equals(doctorService.hashPassword(password))) {
+                Doctor doctor = doctorOpt.get();
                 session.setAttribute("user", doctor);
                 System.out.println("[DEBUG] Doctor login successful: " + username);
                 return "redirect:/doctor/dashboard";
@@ -150,10 +143,9 @@ public class AuthController {
                 return "login";
             }
         } else if (userType.equals("ADMIN")) {
-            Admin admin = adminService.findByUsername(username);
-            System.out.println("[DEBUG] Admin found: " + (admin != null));
-            if (admin != null && admin.getPassword().equals(password)) {
-                session.setAttribute("user", admin);
+            Optional<Admin> adminOpt = Optional.ofNullable(adminService.findByUsername(username));
+            if(adminOpt.isPresent() && adminOpt.get().getPassword().equals(adminService.hashPassword(password))) {
+                session.setAttribute("user", adminOpt.get());
                 System.out.println("[DEBUG] Admin login successful: " + username);
                 return "redirect:/admin/dashboard";
             } else {

@@ -9,30 +9,34 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Collections;
 import java.util.List;
 
 @Controller
-@RequestMapping("/patient")
 public class PatientController {
     @Autowired
     private AppointmentService appointmentService;
 
-    @GetMapping("/dashboard")
-    public String patientDashboard(HttpSession session, Model model) {
-        Patient patient = (Patient) session.getAttribute("user");
+    // This method runs before any other in this controller,
+    // and its return value is added to the model.
+    @ModelAttribute("user")
+    public Patient addUserToModel(HttpSession session) {
+        return (Patient) session.getAttribute("user");
+    }
+
+    @GetMapping("/patient/dashboard")
+    public String patientDashboard(@ModelAttribute("user") Patient patient, Model model) {
         if (patient == null) {
             return "redirect:/login";
         }
-        model.addAttribute("user", patient);
         model.addAttribute("activePage", "dashboard");
         return "patient/dashboard";
     }
 
-    @GetMapping("/appointments")
-    public String viewAppointments(HttpSession session, Model model){
-        Patient patient = (Patient) session.getAttribute("user");
+    @GetMapping("/patient/appointments")
+    public String viewAppointments(@ModelAttribute("user") Patient patient, Model model){
         if (patient == null){
             return "redirect:/login";
         }
@@ -42,20 +46,17 @@ public class PatientController {
         return "patient/appointments";
     }
 
-    @GetMapping("/profile")
-    public String patientProfile(HttpSession session, Model model) {
-        Patient patient = (Patient) session.getAttribute("user");
+    @GetMapping("/patient/profile")
+    public String patientProfile(@ModelAttribute("user") Patient patient, Model model) {
         if (patient == null) {
             return "redirect:/login";
         }
-        model.addAttribute("user", patient);
         model.addAttribute("activePage", "profile");
         return "patient/profile";
     }
 
-    @GetMapping("/prescriptions")
-    public String viewPrescriptions(HttpSession session, Model model){
-        Patient patient = (Patient) session.getAttribute("user");
+    @GetMapping("/patient/prescriptions")
+    public String viewPrescriptions(@ModelAttribute("user") Patient patient, Model model){
         if (patient == null){
             return "redirect:/login";
         }
@@ -65,13 +66,11 @@ public class PatientController {
 
     }
 
-    @GetMapping("/view-records")
-    public String viewMedicalRecords(HttpSession session, Model model){
-        Patient patient = (Patient) session.getAttribute("user");
+    @GetMapping("/patient/view-records")
+    public String viewMedicalRecords(@ModelAttribute("user") Patient patient, Model model){
         if (patient == null){
             return "redirect:/login";
         }
-        model.addAttribute("user", patient);
         model.addAttribute("activePage", "view-records");
         return "patient/view-records"; // This should match the new page name if you create one
     }

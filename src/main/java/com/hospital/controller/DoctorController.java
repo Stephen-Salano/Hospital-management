@@ -15,6 +15,7 @@ public class DoctorController {
             return "redirect:/login";
         }
         model.addAttribute("user", doctor);
+        model.addAttribute("activePage", "dashboard");
         return "doctor/dashboard";
     }
 } 

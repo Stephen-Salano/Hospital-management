@@ -97,6 +97,10 @@ public class Doctor {
         updatedAt = LocalDateTime.now();
     }
 
+    public String getFullName() {
+        return firstName + (middleName != null && !middleName.isEmpty() ? " " + middleName : "") + " " + lastName;
+    }
+
 
 
     // Gender enum

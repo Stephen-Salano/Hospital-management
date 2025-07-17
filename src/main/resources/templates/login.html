@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/main :: head">
+<head th:replace="~{layout/main :: head}">
     <title>SAVANNAH HEALTHCARE</title>
     <script>
         function displayWelcomeMessage() {
@@ -56,7 +56,7 @@
             </div>
         </div>
     </div>
-    <div th:replace="layout/main :: footer"></div>
+    <div th:replace="~{layout/main :: footer}"></div>
 
     <!-- Form Validation Script -->
     <script>

@@ -56,6 +56,10 @@ public class DoctorService {
         return doctorRepository.findByLicenseNumber(licenseNumber);
     }
     
+    public Optional<Doctor> getDoctorByUsername(String username) {
+        return doctorRepository.findByUsername(username);
+    }
+    
     public Doctor updateDoctor(Doctor doctor) {
         if (!doctorRepository.existsById(doctor.getId())) {
             throw new RuntimeException("Doctor not found with ID: " + doctor.getId());

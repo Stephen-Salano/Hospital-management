@@ -275,31 +275,31 @@
     </div>
     <ul>
         <li>
-            <a th:href="@{/patient/dashboard}" th:classappend="${#httpServletRequest.requestURI == '/patient/dashboard' ? 'active' : ''}">
+            <a th:href="@{/patient/dashboard}" th:classappend="${activePage == 'dashboard' ? 'active' : ''}">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </a>
         </li>
         <li>
-            <a th:href="@{/patient/profile}" th:classappend="${#httpServletRequest.requestURI == '/patient/profile' ? 'active' : ''}">
+            <a th:href="@{/patient/profile}" th:classappend="${activePage == 'profile' ? 'active' : ''}">
                 <i class="fas fa-user"></i>
                 <span>Profile</span>
             </a>
         </li>
         <li>
-            <a th:href="@{/patient/appointments}" th:classappend="${#httpServletRequest.requestURI == '/patient/appointments' ? 'active' : ''}" class="active">
+            <a th:href="@{/patient/appointments}" th:classappend="${activePage == 'appointments' ? 'active' : ''}">
                 <i class="fas fa-calendar-check"></i>
                 <span>Appointments</span>
             </a>
         </li>
         <li>
-            <a th:href="@{/patient/prescriptions}" th:classappend="${#httpServletRequest.requestURI == '/patient/prescriptions' ? 'active' : ''}">
+            <a th:href="@{/patient/prescriptions}" th:classappend="${activePage == 'prescriptions' ? 'active' : ''}">
                 <i class="fas fa-prescription-bottle-alt"></i>
                 <span>Prescriptions</span>
             </a>
         </li>
         <li>
-            <a th:href="@{/patient/view-records}" th:classappend="${#httpServletRequest.requestURI == '/patient/view-records' ? 'active' : ''}">
+            <a th:href="@{/patient/view-records}" th:classappend="${activePage == 'view-records' ? 'active' : ''}">
                 <i class="fas fa-file-medical"></i>
                 <span>Medical Records</span>
             </a>
@@ -351,7 +351,7 @@
                     <tr th:each="appt : ${appointments}">
                         <td>
                             <div>
-                                <strong th:text="${appt.doctor.firstName + ' ' + appt.doctor.lastName}">Dr. Name</strong>
+                                <strong th:text="${appt.doctor.getFullName()}">Dr. Name</strong>
                                 <br>
                                 <small th:text="${appt.doctor.specialty}" style="color: #666;">Specialty</small>
                             </div>
