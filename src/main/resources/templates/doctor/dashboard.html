@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <head th:replace="~{layout/doctor_layout :: head('Doctor Dashboard')}"></head>
+<head th:replace="~{layout/doctor_layout :: head('Doctor Dashboard', ~{::style})}">
     <style>
         .content { padding: 20px; }
         .section-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }

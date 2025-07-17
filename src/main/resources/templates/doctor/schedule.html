@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <head th:replace="~{layout/doctor_layout :: head('My Schedule')}"></head>
-    <link rel="stylesheet" th:href="@{/css/appointments_table.css}"/>
+<head th:replace="~{layout/doctor_layout :: head('My Schedule', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/appointments_table.css}" />
 </head>
 <body>
 <div th:replace="~{layout/doctor_layout :: page(pageTitle='My Schedule', activePage='schedule', pageContent=~{::.content})}">

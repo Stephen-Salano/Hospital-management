@@ -1,13 +1,12 @@
 package com.hospital.service;
 
 import com.hospital.entity.Doctor;
+import com.hospital.util.PasswordUtil;
 import com.hospital.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +34,7 @@ public class DoctorService {
         }
         
         // Hash password
-        doctor.setPassword(hashPassword(doctor.getPassword()));
+        doctor.setPassword(PasswordUtil.hashPassword(doctor.getPassword()));
         
         return doctorRepository.save(doctor);
     }
@@ -84,31 +83,5 @@ public class DoctorService {
     
     public boolean existsByPhone(String phone) {
         return doctorRepository.existsByPhone(phone);
-    }
-    
-    public Doctor findByLicenseNumber(String licenseNumber) {
-        return doctorRepository.findByLicenseNumber(licenseNumber)
-                .orElse(null);
-    }
-    
-    public Doctor findByEmail(String email) {
-        return doctorRepository.findByEmail(email)
-                .orElse(null);
-    }
-    
-    public String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error hashing password", e);
-        }
     }
 } 

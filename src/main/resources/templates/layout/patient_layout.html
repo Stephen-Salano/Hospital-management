@@ -1,197 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head(pageTitle)">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${pageTitle} + ' - Savannah Healthcare'"></title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-    <style>
-        /* Base Layout CSS */
-        :root {
-            --bg: #F5EFE6;
-            --text: #4A403A;
-            --section-bg: #D4B59E;
-            --nav: #8C6E52;
-            --active-bg: #6F5B49;
-            --white: #FFFFFF;
-            --shadow: rgba(0,0,0,0.1);
-        }
-
-        [data-theme="dark"] {
-            --bg: #1e1e1e;
-            --text: #f5f5f5;
-            --section-bg: #2d2d2d;
-            --nav: #3c3c3c;
-            --active-bg: #555;
-            --white: #2a2a2a;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            transition: all 0.3s ease;
-        }
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            width: 250px;
-            background: var(--section-bg);
-            padding: 20px;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            overflow-y: auto;
-        }
-
-        .sidebar.collapsed {
-            width: 70px;
-        }
-
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--nav);
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-
-        .sidebar-header i {
-            font-size: 24px;
-            color: var(--nav);
-        }
-
-        .sidebar-header h3 {
-            margin-left: 10px;
-            font-size: 18px;
-            color: var(--text);
-            transition: opacity 0.3s ease;
-        }
-
-        .sidebar.collapsed .sidebar-header h3 {
-            opacity: 0;
-        }
-
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar ul li {
-            margin-bottom: 10px;
-        }
-
-        .sidebar ul li a {
-            display: flex;
-            align-items: center;
-            padding: 12px 10px;
-            color: var(--text);
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar ul li a:hover {
-            background: var(--nav);
-            color: var(--white);
-        }
-
-        .sidebar ul li a.active {
-            background: var(--active-bg);
-            color: var(--white);
-        }
-
-        .sidebar ul li a i {
-            font-size: 18px;
-            width: 20px;
-            text-align: center;
-        }
-
-        .sidebar ul li a span {
-            margin-left: 10px;
-            transition: opacity 0.3s ease;
-        }
-
-        .sidebar.collapsed ul li a span {
-            opacity: 0;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            transition: margin-left 0.3s ease;
-            min-height: 100vh;
-        }
-
-        .sidebar.collapsed ~ .main-content {
-            margin-left: 70px;
-        }
-
-        .topbar {
-            background: var(--nav);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px var(--shadow);
-        }
-
-        .topbar h2 {
-            color: var(--white);
-            font-size: 20px;
-        }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .topbar-right .username {
-            color: var(--white);
-            font-weight: 500;
-        }
-
-        .topbar-right button {
-            background: none;
-            border: none;
-            color: var(--white);
-            cursor: pointer;
-            font-size: 16px;
-            padding: 5px;
-            border-radius: 4px;
-            transition: background 0.3s ease;
-        }
-
-        .topbar-right button:hover {
-            background: var(--active-bg);
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 70px;
-            }
-
-            .main-content {
-                margin-left: 70px;
-            }
-
-            .sidebar ul li a span {
-                opacity: 0;
-            }
-
-            .topbar h2 {
-                font-size: 18px;
-            }
-        }
-    </style>
+<head th:fragment="head(title, extra_links)">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${title} + ' - Savannah Healthcare'"></title>
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/layout.css}"/>
+    <th:block th:replace="${extra_links} ?: ~{}" />
 </head>
 <body>
 
@@ -199,99 +14,54 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header" onclick="toggleSidebar()">
-            <i class="fas fa-hospital"></i>
+            <i class="fas fa-hospital-user"></i>
             <h3>Patient Portal</h3>
         </div>
         <ul>
-            <li>
-                <a th:href="@{/patient/dashboard}" th:classappend="${activePage == 'dashboard' ? 'active' : ''}">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{/patient/profile}" th:classappend="${activePage == 'profile' ? 'active' : ''}">
-                    <i class="fas fa-user"></i>
-                    <span>Profile</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{/patient/appointments}" th:classappend="${activePage == 'appointments' ? 'active' : ''}">
-                    <i class="fas fa-calendar-check"></i>
-                    <span>Appointments</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{/patient/prescriptions}" th:classappend="${activePage == 'prescriptions' ? 'active' : ''}">
-                    <i class="fas fa-prescription-bottle-alt"></i>
-                    <span>Prescriptions</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{/patient/view-records}" th:classappend="${activePage == 'view-records' ? 'active' : ''}">
-                    <i class="fas fa-file-medical"></i>
-                    <span>Medical Records</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?');">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            </li>
+            <li><a th:href="@{/patient/dashboard}" th:classappend="${activePage == 'dashboard' ? 'active' : ''}"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li><a th:href="@{/patient/profile}" th:classappend="${activePage == 'profile' ? 'active' : ''}"><i class="fas fa-user"></i><span>Profile</span></a></li>
+            <li><a th:href="@{/patient/appointments}" th:classappend="${activePage == 'appointments' ? 'active' : ''}"><i class="fas fa-calendar-check"></i><span>Appointments</span></a></li>
+            <li><a th:href="@{/patient/prescriptions}" th:classappend="${activePage == 'prescriptions' ? 'active' : ''}"><i class="fas fa-prescription-bottle-alt"></i><span>Prescriptions</span></a></li>
+            <li><a th:href="@{/patient/view-records}" th:classappend="${activePage == 'view-records' ? 'active' : ''}"><i class="fas fa-file-medical"></i><span>Medical Records</span></a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?');"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
         </ul>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Top Bar -->
         <div class="topbar">
             <h2 th:text="${pageTitle}"></h2>
             <div class="topbar-right">
-                <span class="username" th:text="${user.username}">Username</span>
-                <button onclick="toggleTheme()">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?');" style="color: var(--white); text-decoration: none;">
+                <span class="username" th:text="${user.fullName}">Patient Name</span>
+                <button onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+                <a th:href="@{/logout}" style="color: var(--white); text-decoration: none;" onclick="return confirm('Are you sure you want to log out?');">
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             </div>
         </div>
-
-        <!-- Content Area -->
         <div th:replace="${pageContent}"></div>
-
     </div>
 
     <script>
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('collapsed');
+            document.getElementById('sidebar').classList.toggle('collapsed');
         }
-
         function toggleTheme() {
             const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
+            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-
-            // Update theme toggle icon
             const themeIcon = document.querySelector('.topbar-right button i');
             themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
-
-        // Apply saved theme on page load
         document.addEventListener('DOMContentLoaded', function() {
             const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
-
-            // Update theme toggle icon
             const themeIcon = document.querySelector('.topbar-right button i');
             themeIcon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         });
     </script>
 </div>
+
 </body>
 </html>

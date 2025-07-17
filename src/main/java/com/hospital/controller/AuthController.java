@@ -15,6 +15,7 @@ import com.hospital.entity.Doctor;
 import com.hospital.service.DoctorService;
 import com.hospital.entity.BaseUser;
 import com.hospital.entity.Admin;
+import com.hospital.util.PasswordUtil;
 import com.hospital.service.AdminService;
 
 @Controller
@@ -121,8 +122,8 @@ public class AuthController {
                         HttpSession session) {
         System.out.println("[DEBUG] Login attempt: username=" + username + ", userType=" + userType);
         if (userType.equals("PATIENT")) {
-            Optional<Patient> patientOpt = patientService.getPatientByUsername(username);            
-            if (patientOpt.isPresent() && patientOpt.get().getPassword().equals(patientService.hashPassword(password))) {
+            Optional<Patient> patientOpt = patientService.getPatientByUsername(username);
+            if (patientOpt.isPresent() && patientOpt.get().getPassword().equals(PasswordUtil.hashPassword(password))) {
                 Patient patient = patientOpt.get();
                     session.setAttribute("user", patient);
                     System.out.println("[DEBUG] Patient login successful: " + username);
@@ -139,7 +140,7 @@ public class AuthController {
                 doctorOpt = doctorService.getDoctorByEmail(username);
             }
 
-            if (doctorOpt.isPresent() && doctorOpt.get().getPassword().equals(doctorService.hashPassword(password))) {
+            if (doctorOpt.isPresent() && doctorOpt.get().getPassword().equals(PasswordUtil.hashPassword(password))) {
                 Doctor doctor = doctorOpt.get();
                 session.setAttribute("user", doctor);
                 System.out.println("[DEBUG] Doctor login successful: " + username);
@@ -151,7 +152,7 @@ public class AuthController {
             }
         } else if (userType.equals("ADMIN")) {
             Optional<Admin> adminOpt = adminService.getAdminByUsername(username);
-            if(adminOpt.isPresent() && adminOpt.get().getPassword().equals(adminService.hashPassword(password))) {
+            if(adminOpt.isPresent() && adminOpt.get().getPassword().equals(PasswordUtil.hashPassword(password))) {
                 session.setAttribute("user", adminOpt.get());
                 System.out.println("[DEBUG] Admin login successful: " + username);
                 return "redirect:/admin/dashboard";

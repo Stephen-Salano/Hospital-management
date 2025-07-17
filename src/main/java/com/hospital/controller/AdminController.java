@@ -63,6 +63,9 @@ public class AdminController {
             @RequestParam String licenseNumber,
             @RequestParam int experience,
             @RequestParam String password,
+            @RequestParam String dateOfBirth,
+            @RequestParam String address,
+            @RequestParam String username,
             Model model) {
         
         try {
@@ -73,6 +76,8 @@ public class AdminController {
             phone = phone.trim();
             gender = gender.trim();
             licenseNumber = licenseNumber.trim();
+            address = address.trim();
+            username = username.trim();
             
             // Create Doctor entity
             Doctor doctor = new Doctor();
@@ -89,6 +94,9 @@ public class AdminController {
             doctor.setLicenseNumber(licenseNumber);
             doctor.setExperience(experience);
             doctor.setPassword(password);
+            doctor.setDateOfBirth(LocalDate.parse(dateOfBirth));
+            doctor.setAddress(address);
+            doctor.setUsername(username);
             
             Doctor savedDoctor = doctorService.saveDoctor(doctor);
             model.addAttribute("success", "Doctor " + savedDoctor.getFullName() + " has been successfully registered!");

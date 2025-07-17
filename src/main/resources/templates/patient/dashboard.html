@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <head th:replace="~{layout/patient_layout :: head('Patient Dashboard')}"></head>
+<head th:replace="~{layout/patient_layout :: head('Patient Dashboard', ~{::style})}">
     <style>
         /* Content Area */
         .content {
