@@ -26,6 +26,7 @@ public class PatientController {
             return "redirect:/login";
         }
         model.addAttribute("user", patient);
+        model.addAttribute("activePage", "dashboard");
         return "patient/dashboard";
     }
 
@@ -37,7 +38,19 @@ public class PatientController {
         }
         List<Appointment> appointments = appointmentService.getAppointmentsByPatientEmail(patient.getEmail());
         model.addAttribute("appointments", appointments);
+        model.addAttribute("activePage", "appointments");
         return "patient/appointments";
+    }
+
+    @GetMapping("/profile")
+    public String patientProfile(HttpSession session, Model model) {
+        Patient patient = (Patient) session.getAttribute("user");
+        if (patient == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("user", patient);
+        model.addAttribute("activePage", "profile");
+        return "patient/profile";
     }
 
     @GetMapping("/prescriptions")
@@ -47,17 +60,19 @@ public class PatientController {
             return "redirect:/login";
         }
         model.addAttribute("prescriptions", Collections.emptyList());
+        model.addAttribute("activePage", "prescriptions");
         return "patient/prescriptions";
 
     }
 
-    @GetMapping("/medical-records")
+    @GetMapping("/view-records")
     public String viewMedicalRecords(HttpSession session, Model model){
         Patient patient = (Patient) session.getAttribute("user");
         if (patient == null){
             return "redirect:/login";
         }
         model.addAttribute("user", patient);
-        return "patient/medical-records";
+        model.addAttribute("activePage", "view-records");
+        return "patient/view-records"; // This should match the new page name if you create one
     }
 } 
