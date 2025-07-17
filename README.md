@@ -5,6 +5,7 @@ A comprehensive, full-stack hospital management web application built using Java
 ## Table of Contents
 - [Features](#features)
 - [Technology Stack](#technology-stack)
+- [Screenshots](#screenshots)
 - [Prerequisites](#prerequisites)
 - [Setup and Installation](#setup-and-installation)
   - [1. Clone the Repository](#1-clone-the-repository)
@@ -55,6 +56,22 @@ The application is divided into three main user roles, each with a dedicated por
 - **Database**: MySQL 8
 - **Build Tool**: Apache Maven
 - **Server**: Embedded Apache Tomcat
+
+## Screenshots
+
+<details>
+<summary>Click to view application screenshots</summary>
+
+### Admin Dashboard
+![Admin Dashboard](./docs/images/admin-dashboard.png)
+
+### Doctor Dashboard
+![Doctor Dashboard](./docs/images/doctor-dashboard.png)
+
+### Patient Dashboard
+![Patient Dashboard](./docs/images/patient-dashboard.png)
+
+</details>
 
 ## Prerequisites
 
