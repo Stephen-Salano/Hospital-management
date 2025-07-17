@@ -2,7 +2,9 @@ package com.hospital.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "patients")
 public class Patient {
 
@@ -83,23 +87,6 @@ public class Patient {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
-    }
-    
-    // Constructors
-    public Patient() {}
-    
-    public Patient(String username, String firstName, String middleName, String lastName, LocalDate dateOfBirth, Gender gender, String email, 
-                   String phone, String address, String medicalNotes) {
-        this.username = username;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.gender = gender;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.medicalNotes = medicalNotes;
     }
 
     public String getFullName() {
