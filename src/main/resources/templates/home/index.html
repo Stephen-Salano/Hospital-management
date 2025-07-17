@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>Savannah Healthcare</title>
+    <style>
+        /* CSS for the sidebar */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+        }
+
+        /* CSS for the collapsed sidebar button */
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            position: fixed;
+            top: 20px;
+            left: 10px;
+        }
+
+        .openbtn:hover {
+            background-color: #444;
+        }
+
+        /* CSS for centering h1 and styling the search container */
+        header .container {
+            text-align: center;
+        }
+
+        header #searchInput {
+            width: 200px;
+            padding: 10px;
+            margin: 0 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        header #searchButton {
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        header #searchButton:hover {
+            background-color: #45a049;
+        }
+
+        /* CSS for highlighting search results */
+        .highlight {
+            background-color: yellow;
+        }
+
+        /* CSS for error message */
+        #errorMessage {
+            color: red;
+            margin-top: 10px;
+        }
+        .container {
+            text-align: center;
+        }
+        .word {
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&#x2715;</a>
+
+    <!-- Dashboard with submenu -->
+    <a href="javascript:void(0)" onclick="toggleDashboardMenu()">Dashboard ▾</a>
+    <div id="dashboardSubmenu" style="display: none; padding-left: 15px;">
+        <a th:href="@{/doctor/dashboard}">Doctor</a>
+        <a th:href="@{/patient/dashboard}">Patient</a>
+        <a th:href="@{/admin/dashboard}">Admin</a>
+    </div>
+
+    <!-- Other sidebar links -->
+    <a th:href="@{/book-appointment}">Book Appointment</a>
+    <a th:href="@{/register}">Patient Registration</a>
+    <a th:href="@{/login}">Login</a>
+</div>
+
+<script>
+    function toggleDashboardMenu() {
+        const submenu = document.getElementById("dashboardSubmenu");
+        submenu.style.display = submenu.style.display === "none" ? "block" : "none";
+    }
+</script>
+
+<div id="main">
+    <button class="openbtn" onclick="openNav()">&#x2630; Open Sidebar</button>  
+    <header>
+        <div class="container">
+            <h1>SAVANNAH HEALTHCARE</h1>
+            <input type="text" id="searchInput" placeholder="Search...">
+            <button id="searchButton" onclick="search()">Search</button>
+            <div id="errorMessage"></div>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="navbar">
+            <div class="icon">
+                <h2 class="logo">Savannah Healthcare</h2>
+            </div>
+
+            <div class="menu">
+                <ul>
+                    <li><a th:href="@{/}">HOME</a></li>
+                    <li><a th:href="@{/about}">ABOUT</a></li>
+                    <li><a th:href="@{/services}">SERVICE</a></li>
+                    <li><a th:href="@{/contact}">CONTACT</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="myPageArea" class="container">
+            <h2><strong>Empowering Healthcare Through Innovation</strong></h2>
+            <div id="myPageArea" class="word">
+                <p>Savannah Health Care is a leading healthcare institution dedicated</p>
+                <p>to providing state-of-the-art medical care and services to our patients.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openNav() {
+        document.getElementById("mySidebar").style.width = "250px";
+        document.getElementById("main").style.marginLeft = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidebar").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+    }
+
+    //SEARCH BUTTON JS ACTIVATION
+    function search() {
+        var searchTerm = document.getElementById("searchInput").value.toLowerCase();
+        if (searchTerm.trim() === "") {
+            document.getElementById("errorMessage").textContent = "No information searched";
+            return;
+        }
+        document.getElementById("errorMessage").textContent = ""; // Clear error message if any
+        
+        var elementsToSearch = document.querySelectorAll("#myPageArea, .menu a, .sidebar a");
+        
+        // Loop through all elements to search
+        elementsToSearch.forEach(function(element) {
+            var text = element.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                // Wrap the matching text in a span with the "highlight" class
+                var html = element.innerHTML;
+                var highlightedHtml = html.replace(new RegExp(searchTerm, 'gi'), function(match) {
+                    return '<span class="highlight">' + match + '</span>';
+                });
+                element.innerHTML = highlightedHtml;
+            }
+        });
+    }
+</script>
+</body>
+</html> 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>Contact Us - Savannah Healthcare</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f6fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+        .contact-card {
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.10);
+            background: #fff;
+            margin-top: 2rem;
+            padding: 2.5rem 2rem;
+        }
+        .contact-header {
+            background: #111;
+            color: #fff;
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
+            padding: 2rem 1rem 1.5rem 1rem;
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #111;
+        }
+        .btn-primary {
+            background: #111;
+            border: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 2rem;
+            transition: background 0.3s;
+        }
+        .btn-primary:hover {
+            background: #222;
+        }
+        .form-control, .form-select {
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 4px 0 rgba(0,0,0,0.04);
+            border: 1px solid #222;
+            padding: 0.75rem 1rem;
+        }
+        .contact-info {
+            margin-top: 2.5rem;
+            font-size: 1.15rem;
+            color: #222;
+            padding: 1.5rem 1rem;
+            background: #f8f9fa;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
+        }
+    </style>
+</head>
+<body>
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&#x2715;</a>
+        <a href="javascript:void(0)" onclick="toggleDashboardMenu()">Dashboard ▾</a>
+        <div id="dashboardSubmenu" style="display: none; padding-left: 15px;">
+            <a th:href="@{/doctor/dashboard}">Doctor</a>
+            <a th:href="@{/patient/dashboard}">Patient</a>
+            <a th:href="@{/admin/dashboard}">Admin</a>
+        </div>
+        <a th:href="@{/book-appointment}">Book Appointment</a>
+        <a th:href="@{/register}">Patient Registration</a>
+        <a th:href="@{/login}">Login</a>
+    </div>
+
+    <div id="main">
+        <button class="openbtn" onclick="openNav()">&#x2630; Open Sidebar</button>
+        
+        <div class="navbar">
+            <div class="icon">
+                <h2 class="logo">Savannah Healthcare</h2>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a th:href="@{/}">HOME</a></li>
+                    <li><a th:href="@{/about}">ABOUT</a></li>
+                    <li><a th:href="@{/services}">SERVICE</a></li>
+                    <li><a th:href="@{/contact}">CONTACT</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1>Contact Us</h1>
+            <div class="word">
+                <h2>Get in Touch</h2>
+                <p>We're here to help and answer any questions you might have.</p>
+
+                <h2>Contact Information</h2>
+                <p>Address: 123 Healthcare Street, Medical District, City</p>
+                <p>Phone: +123 456 7890</p>
+                <p>Email: info@savannahhealthcare.com</p>
+
+                <h2>Emergency Contact</h2>
+                <p>Emergency Hotline: +123 456 7891</p>
+                <p>Available 24/7 for medical emergencies</p>
+
+                <h2>Business Hours</h2>
+                <p>Monday - Friday: 8:00 AM - 8:00 PM</p>
+                <p>Saturday: 9:00 AM - 5:00 PM</p>
+                <p>Sunday: Emergency Services Only</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+
+        function toggleDashboardMenu() {
+            const submenu = document.getElementById("dashboardSubmenu");
+            submenu.style.display = submenu.style.display === "none" ? "block" : "none";
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>Services - Savannah Healthcare</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f6fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+        .services-header {
+            background: #111;
+            color: #fff;
+            border-radius: 1.5rem;
+            padding: 2rem 1rem 1.5rem 1rem;
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 2.5rem;
+        }
+        .row.g-4 {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .service-card {
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.10);
+            background: #fff;
+            margin-bottom: 0;
+            margin-right: 0;
+            margin-left: 0;
+            padding: 1.2rem 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #222;
+        }
+        .service-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 16px 48px 0 rgba(0,0,0,0.13);
+        }
+        .service-title {
+            color: #111;
+            font-weight: 600;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        .service-desc {
+            color: #222;
+            font-size: 1.08rem;
+        }
+        .row.g-4 > [class^='col-'] {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&#x2715;</a>
+        <a href="javascript:void(0)" onclick="toggleDashboardMenu()">Dashboard ▾</a>
+        <div id="dashboardSubmenu" style="display: none; padding-left: 15px;">
+            <a th:href="@{/doctor/dashboard}">Doctor</a>
+            <a th:href="@{/patient/dashboard}">Patient</a>
+            <a th:href="@{/admin/dashboard}">Admin</a>
+        </div>
+        <a th:href="@{/book-appointment}">Book Appointment</a>
+        <a th:href="@{/register}">Patient Registration</a>
+        <a th:href="@{/login}">Login</a>
+    </div>
+
+    <div id="main">
+        <button class="openbtn" onclick="openNav()">&#x2630; Open Sidebar</button>
+        
+        <div class="navbar">
+            <div class="icon">
+                <h2 class="logo">Savannah Healthcare</h2>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a th:href="@{/}">HOME</a></li>
+                    <li><a th:href="@{/about}">ABOUT</a></li>
+                    <li><a th:href="@{/services}">SERVICE</a></li>
+                    <li><a th:href="@{/contact}">CONTACT</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1 class="services-header">Our Services</h1>
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="service-card h-100">
+                        <div class="service-title">Primary Care</div>
+                        <div class="service-desc">Comprehensive healthcare services for individuals and families, including routine check-ups, preventive care, and treatment of common illnesses.</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="service-card h-100">
+                        <div class="service-title">Specialized Care</div>
+                        <div class="service-desc">Expert medical services in various specialties including cardiology, neurology, orthopedics, and more.</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="service-card h-100">
+                        <div class="service-title">Emergency Care</div>
+                        <div class="service-desc">24/7 emergency medical services with state-of-the-art facilities and experienced medical staff.</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="service-card h-100">
+                        <div class="service-title">Diagnostic Services</div>
+                        <div class="service-desc">Advanced diagnostic imaging and laboratory services to ensure accurate and timely diagnosis.</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="service-card h-100">
+                        <div class="service-title">Surgical Services</div>
+                        <div class="service-desc">Modern surgical facilities and experienced surgeons for both routine and complex procedures.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+
+        function toggleDashboardMenu() {
+            const submenu = document.getElementById("dashboardSubmenu");
+            submenu.style.display = submenu.style.display === "none" ? "block" : "none";
+        }
+    </script>
+</body>
+</html> 

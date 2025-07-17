@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>About Us - Savannah Healthcare</title>
+</head>
+<body>
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&#x2715;</a>
+        <a href="javascript:void(0)" onclick="toggleDashboardMenu()">Dashboard ▾</a>
+        <div id="dashboardSubmenu" style="display: none; padding-left: 15px;">
+            <a th:href="@{/doctor/dashboard}">Doctor</a>
+            <a th:href="@{/patient/dashboard}">Patient</a>
+            <a th:href="@{/admin/dashboard}">Admin</a>
+        </div>
+        <a th:href="@{/book-appointment}">Book Appointment</a>
+        <a th:href="@{/register}">Patient Registration</a>
+        <a th:href="@{/login}">Login</a>
+    </div>
+
+    <div id="main">
+        <button class="openbtn" onclick="openNav()">&#x2630; Open Sidebar</button>
+        
+        <div class="navbar">
+            <div class="icon">
+                <h2 class="logo">Savannah Healthcare</h2>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a th:href="@{/}">HOME</a></li>
+                    <li><a th:href="@{/about}">ABOUT</a></li>
+                    <li><a th:href="@{/services}">SERVICE</a></li>
+                    <li><a th:href="@{/contact}">CONTACT</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1>About Savannah Healthcare</h1>
+            <div class="word">
+                <p>Welcome to Savannah Healthcare, where excellence meets compassion in healthcare delivery.</p>
+                <p>Founded with a vision to provide accessible, high-quality healthcare services, we have grown to become a trusted name in the medical community.</p>
+                <p>Our team of experienced healthcare professionals is dedicated to providing personalized care to each patient, ensuring their well-being and comfort throughout their healthcare journey.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+
+        function toggleDashboardMenu() {
+            const submenu = document.getElementById("dashboardSubmenu");
+            submenu.style.display = submenu.style.display === "none" ? "block" : "none";
+        }
+    </script>
+</body>
+</html> 

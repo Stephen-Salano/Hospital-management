@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to your Dashboard!</h1>
+    <div th:if="${user != null}">
+        <p>Welcome, <span th:text="${user.fullName}"></span>!</p>
+        <p>Your username: <span th:text="${user.username}"></span></p>
+        <p>Email: <span th:text="${user.email}"></span></p>
+        <p>Phone: <span th:text="${user.phone}"></span></p>
+        <p>Specialty: <span th:text="${user.specialty}"></span></p>
+        <p>License Number: <span th:text="${user.licenseNumber}"></span></p>
+        <p>Experience: <span th:text="${user.experience}"></span> years</p>
+        <p>Gender: <span th:text="${user.genderString}"></span></p>
+        <a th:href="@{/logout}" class="btn btn-danger" style="color:white; background:#dc3545; border-radius:20px; padding:6px 16px; text-decoration:none;">Logout</a>
+    </div>
+    <div th:if="${user == null}">
+        <p>User information not found in session.</p>
+    </div>
+</body>
+</html> 

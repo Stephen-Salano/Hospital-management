@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Doctor - Hospital Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #F5EFE6;
+      font-family: Arial, sans-serif;
+      color: #4A403A;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: 40px auto;
+      padding: 30px 40px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #8C6E52;
+      margin-bottom: 30px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .tabs button {
+      padding: 10px 20px;
+      background: #8C6E52;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .tabs button.active {
+      background: #4A403A;
+    }
+
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group i {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      color: #8C6E52;
+      font-size: 14px;
+    }
+
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+      width: 100%;
+      padding: 10px 12px 10px 36px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    input[type="submit"] {
+      background: #8C6E52;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background: #4A403A;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      padding: 10px;
+      border: 1px solid #c3e6cb;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      padding: 10px;
+      border: 1px solid #f5c6cb;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .back-link a {
+      color: #8C6E52;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Hospital Registration</h2>
+
+  <!-- Success Message -->
+  <div th:if="${success}" class="success" th:text="${success}"></div>
+  
+  <!-- Error Message -->
+  <div th:if="${error}" class="error" th:text="${error}"></div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="toggleTab('doctor')">Add Doctor</button>
+    <button class="tab-btn" onclick="toggleTab('patient')">Add Patient</button>
+  </div>
+
+  <!-- Doctor Form -->
+  <div id="doctor" class="form-section active">
+    <form th:action="@{/admin/save-doctor}" method="POST" onsubmit="return validateDoctor()">
+      <label>Full Name</label>
+      <div class="input-group">
+        <i class="fa fa-user-md"></i>
+        <input type="text" name="fullName" placeholder="Dr. Jane Doe" required>
+      </div>
+
+      <label>Specialty</label>
+      <div class="input-group">
+        <i class="fa fa-stethoscope"></i>
+        <input type="text" name="specialty" placeholder="Cardiology, Pediatrics..." required>
+      </div>
+
+      <label>Email</label>
+      <div class="input-group">
+        <i class="fa fa-envelope"></i>
+        <input type="email" name="email" id="doctor_email" placeholder="doctor@example.com" required>
+      </div>
+
+      <label>Phone</label>
+      <div class="input-group">
+        <i class="fa fa-phone"></i>
+        <input type="text" name="phone" id="doctor_phone" placeholder="+254712345678" required>
+      </div>
+
+      <label>Gender</label>
+      <div class="input-group">
+        <i class="fa fa-venus-mars"></i>
+        <select name="gender" required>
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <label>License Number</label>
+      <div class="input-group">
+        <i class="fa fa-id-badge"></i>
+        <input type="text" name="licenseNumber" placeholder="KMPDB-12345" required>
+      </div>
+
+      <label>Years of Experience</label>
+      <div class="input-group">
+        <i class="fa fa-briefcase"></i>
+        <input type="number" name="experience" placeholder="e.g., 10" required>
+      </div>
+
+      <label>Password</label>
+      <div class="input-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" name="password" placeholder="Create a strong password" required>
+      </div>
+
+      <input type="submit" value="Add Doctor">
+    </form>
+  </div>
+
+  <!-- Patient Form -->
+  <div id="patient" class="form-section">
+    <form action="/admin/save-patient" method="POST" onsubmit="return validatePatient()">
+      <label>Full Name</label>
+      <div class="input-group">
+        <i class="fa fa-user"></i>
+        <input type="text" name="fullName" placeholder="John Doe" required>
+      </div>
+
+      <label>Date of Birth</label>
+      <div class="input-group">
+        <i class="fa fa-calendar"></i>
+        <input type="date" name="dateOfBirth" required>
+      </div>
+
+      <label>Gender</label>
+      <div class="input-group">
+        <i class="fa fa-venus-mars"></i>
+        <select name="gender" required>
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <label>Email</label>
+      <div class="input-group">
+        <i class="fa fa-envelope"></i>
+        <input type="email" name="email" id="patient_email" placeholder="patient@example.com" required>
+      </div>
+
+      <label>Phone</label>
+      <div class="input-group">
+        <i class="fa fa-phone"></i>
+        <input type="text" name="phone" id="patient_phone" placeholder="+254712345678" required>
+      </div>
+
+      <label>Address</label>
+      <div class="input-group">
+        <i class="fa fa-map-marker-alt"></i>
+        <input type="text" name="address" placeholder="123 Main St, Nairobi" required>
+      </div>
+
+      <label>Medical Notes (optional)</label>
+      <div class="input-group">
+        <i class="fa fa-notes-medical"></i>
+        <textarea name="medicalNotes" rows="3" placeholder="Any existing conditions, allergies..."></textarea>
+      </div>
+
+      <input type="submit" value="Add Patient">
+    </form>
+  </div>
+
+  <div class="back-link">
+    <a href="/admin/dashboard">← Back to Admin Dashboard</a>
+  </div>
+</div>
+
+<script>
+  function toggleTab(tab) {
+    document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+    document.querySelector(`.tab-btn[onclick="toggleTab('${tab}')"]`).classList.add('active');
+  }
+
+  function validatePhone(phone) {
+    return /^(\+254|0)?7\d{8}$/.test(phone);
+  }
+
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function validateDoctor() {
+    const phone = document.getElementById("doctor_phone").value;
+    const email = document.getElementById("doctor_email").value;
+    if (!validatePhone(phone)) {
+      alert("Enter a valid Kenyan phone number (e.g. 0712345678 or +254712345678)");
+      return false;
+    }
+    if (!validateEmail(email)) {
+      alert("Enter a valid email address");
+      return false;
+    }
+    return true;
+  }
+
+  function validatePatient() {
+    const phone = document.getElementById("patient_phone").value;
+    const email = document.getElementById("patient_email").value;
+    if (!validatePhone(phone)) {
+      alert("Enter a valid Kenyan phone number");
+      return false;
+    }
+    if (!validateEmail(email)) {
+      alert("Enter a valid email address");
+      return false;
+    }
+    return true;
+  }
+</script>
+
+</body>
+</html> 

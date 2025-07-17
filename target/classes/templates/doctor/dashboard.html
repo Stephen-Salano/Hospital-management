@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Doctor Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; }
+        .container { max-width: 800px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 30px; }
+        h1 { color: #007bff; }
+        .info { margin-bottom: 20px; }
+        .info p { margin: 6px 0; }
+        .logout-btn { display: inline-block; background: #dc3545; color: #fff; padding: 8px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; }
+        .logout-btn:hover { background: #b52a37; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, <span th:text="${user.firstName}"></span>!</h1>
+        <div class="info">
+            <p><strong>Full Name:</strong> <span th:text="${user.firstName}"></span> <span th:text="${user.middleName}"></span> <span th:text="${user.lastName}"></span></p>
+            <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+            <p><strong>Phone:</strong> <span th:text="${user.phone}"></span></p>
+            <p><strong>Specialty:</strong> <span th:text="${user.specialty}"></span></p>
+            <p><strong>License Number:</strong> <span th:text="${user.licenseNumber}"></span></p>
+            <p><strong>Experience:</strong> <span th:text="${user.experience}"></span> years</p>
+            <p><strong>Gender:</strong> <span th:text="${user.gender}"></span></p>
+            <p><strong>Date of Birth:</strong> <span th:text="${user.dateOfBirth}"></span></p>
+            <p><strong>Address:</strong> <span th:text="${user.address}"></span></p>
+        </div>
+        <a th:href="@{/logout}" class="logout-btn">Logout</a>
+    </div>
+</body>
+</html> 

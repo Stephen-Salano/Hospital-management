@@ -1,0 +1,47 @@
+<div class="form-container bg-white p-4 rounded shadow" style="max-width: 500px; margin: auto;">
+    <h2 class="text-center mb-4">Registration Form</h2>
+    <form th:action="@{/register}" method="post">
+        <div class="form-group mb-3">
+            <label>Full Name</label>
+            <input type="text" class="form-control" name="fullname" required>
+        </div>
+        <div class="form-group mb-3">
+            <label>Email Address</label>
+            <input type="email" class="form-control" name="email" required>
+        </div>
+        <div class="form-group mb-3">
+            <label>Phone Number</label>
+            <input type="tel" class="form-control" name="phone" required>
+        </div>
+        <div class="form-group mb-3">
+            <label>Date of Birth</label>
+            <input type="date" class="form-control" name="dob">
+        </div>
+        <div class="form-group mb-3">
+            <label>Gender</label>
+            <select class="form-control" name="gender">
+                <option value="">Select...</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer_not">Prefer not to say</option>
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label>Username</label>
+            <input type="text" class="form-control" name="username" required>
+        </div>
+        <div class="form-group mb-3">
+            <label>Password</label>
+            <input type="password" class="form-control" name="password" required>
+        </div>
+        <div class="form-group mb-3">
+            <label>Confirm Password</label>
+            <input type="password" class="form-control" name="confirm_password" required>
+        </div>
+        <div class="form-group mb-3">
+            <label><input type="checkbox" required> I agree to the Terms & Conditions</label>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Register</button>
+    </form>
+</div> 
